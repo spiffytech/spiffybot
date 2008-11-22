@@ -1,10 +1,11 @@
 #This program is licensed under the GNU GPLv3
 #Copyright Brian Cottingham <spiffytech@gmail.com>
-#Version 0.1- Basically funtional
+#Version 0.1.1- Basically funtional
 
 import re
 import os
 import socket
+from optparse import OptionParser
 
 #Connection vars
 botNick = "spiffybot"
@@ -19,6 +20,14 @@ port = 6667 #Connection port
 
 
 def main():
+    #Parse command-line arguments
+    parser = OptionParser(prog='client')
+    parser.add_option("--botnick", dest = "botNick", action="store")
+    options, args = parser.parse_args()
+    print botNick
+    print options
+    print args
+    
     connect()
     #Message reading loop
     while True:
@@ -28,40 +37,29 @@ def main():
         if data.find ( 'PING' ) != -1: #receive "ping"
             irc.send ( 'PONG ' + data.split() [ 1 ] + '\r\n' ) #respond "pong"
 
-        #If server sent us a real message:
+        #If the server sent us a real message:
         elif data.find ( 'PRIVMSG' ) != -1:
             message = ':'.join ( data.split ( ':' ) [ 2: ] )
             message = message[0:-2] #IRC messages end with \r\n
-            if message[0] == "!" or message[0:len(botNick)] == botNick: #Command for bot
+            if message.startswith("!") or message.startswith(botNick): #Command for bot
                 nick = getNick(data) #Get nick of message sender
                 destination = getDest(data) #Get channel message came from
 
                 #Parse command from message
-                if message[0] == "!": #!calc 2*2
+                if message.startswith("!"): #!calc 2*2
                     command = message.partition(" ")[0].partition("!")[2]
                     args = message.partition(" ")[2]
-                elif message[0:len(botNick)] == botNick: #Message starts with bot name
-                    if message[len(botNick)] == ",": #spiffybot, calc 2*2
-                        splitter = ", "
-                    elif message[len(botNick)] == "-": #spiffybot- calc 2*2
-                        splitter = "- "
-                    elif message[len(botNick)] == " ": #spiffybot calc 2*2
-                        splitter = " "
-                    elif message[len(botNick)] == ":": #spiffybot: calc 2*2
-                        splitter = ":"
-
-                    command = message.partition(splitter)[2].partition(" ")[0]
-                    args = message.partition(splitter)[2].partition(" ")[2]
+                elif message.startswith(botNick): #Message starts with bot name
+                    command = message.partition(" ")[2].partition(" ")[0]
+                    args = message.partition(" ")[2].partition(" ")[2]
 
 
                 #Run the specified command
                 reply = runCommand(command, args)
 
-                if not locals().has_key("reply"): #Just in case...
-                    reply = "whatever"
-
                 #Send the final reply
-                irc.send ( 'PRIVMSG ' +  destination + ' :' + nick + ': ' + reply + '\r\n' )
+                if locals().has_key("reply"): #Just in case...
+                    irc.send ( 'PRIVMSG ' +  destination + ' :' + nick + ': ' + reply + '\r\n' )
 
 
 def runCommand(command, args):
