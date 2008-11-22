@@ -21,12 +21,12 @@ port = 6667 #Connection port
 
 def main():
     #Parse command-line arguments
-    parser = OptionParser(prog='client')
-    parser.add_option("--botnick", dest = "botNick", action="store")
-    options, args = parser.parse_args()
-    print botNick
-    print options
-    print args
+#    parser = OptionParser(prog='client')
+#    parser.add_option("--botnick", dest = "botNick", action="store")
+#    options, args = parser.parse_args()
+#    print botNick
+#    print options
+#    print args
     
     connect()
     #Message reading loop
