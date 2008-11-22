@@ -1,7 +1,8 @@
 #This program is licensed under the GNU GPLv3
 #Copyright Brian Cottingham <spiffytech@gmail.com>
-#Version 0.1.1- Basically funtional
+#Version 0.2- Now uses IRC module
 
+import irc
 import re
 import os
 import socket
@@ -28,38 +29,31 @@ def main():
 #    print options
 #    print args
     
-    connect()
+    chat = irc.irc("spiffybot", "irc.freenode.net", 6667, "here", "place", "me", "#bottest", debug=1)
+    chat.send("#bottest", "Greetings, mortal.")
     #Message reading loop
     while True:
-        data = irc.recv ( 4096 ) # Get next message from server
+        data = chat.getMsg() #Get message from server
+        message = data[0]
+        nick = data[1]
+        destination = data[2]
 
-        #Occasionally respond to connection check by IRC server
-        if data.find ( 'PING' ) != -1: #receive "ping"
-            irc.send ( 'PONG ' + data.split() [ 1 ] + '\r\n' ) #respond "pong"
+        #Parse command from message
+        if message.startswith("!"): #!calc 2*2
+            command = message.partition(" ")[0].partition("!")[2]
+            args = message.partition(" ")[2]
+        elif message.startswith(botNick): #Message starts with bot name
+            command = message.partition(" ")[2].partition(" ")[0]
+            args = message.partition(" ")[2].partition(" ")[2]
 
-        #If the server sent us a real message:
-        elif data.find ( 'PRIVMSG' ) != -1:
-            message = ':'.join ( data.split ( ':' ) [ 2: ] )
-            message = message[0:-2] #IRC messages end with \r\n
-            if message.startswith("!") or message.startswith(botNick): #Command for bot
-                nick = getNick(data) #Get nick of message sender
-                destination = getDest(data) #Get channel message came from
+        #Run the specified command
+        if locals().has_key("command"):
+            reply = runCommand(command, args)
 
-                #Parse command from message
-                if message.startswith("!"): #!calc 2*2
-                    command = message.partition(" ")[0].partition("!")[2]
-                    args = message.partition(" ")[2]
-                elif message.startswith(botNick): #Message starts with bot name
-                    command = message.partition(" ")[2].partition(" ")[0]
-                    args = message.partition(" ")[2].partition(" ")[2]
-
-
-                #Run the specified command
-                reply = runCommand(command, args)
-
-                #Send the final reply
-                if locals().has_key("reply"): #Just in case...
-                    irc.send ( 'PRIVMSG ' +  destination + ' :' + nick + ': ' + reply + '\r\n' )
+        #Send the final reply
+        if locals().has_key("reply"): #Just in case...
+            chat.send(destination, reply, nick)
+            del reply, command, args
 
 
 def runCommand(command, args):
@@ -99,33 +93,6 @@ def runCommand(command, args):
     else:
         reply = "no such command"
     return reply
-
-
-
-#Parse sending nick from a received message
-def getNick(message):
-    return message.split ( '!' ) [ 0 ].replace ( ':', '' ) 
-
-
-
-#Parse sending channel from received message
-def getDest(message):
-    return ''.join ( message.split ( ':' ) [ :2 ] ).split ( ' ' ) [ -2 ]
-
-
-
-#Connect to server
-def connect():
-    global irc
-    irc = socket.socket ( socket.AF_INET, socket.SOCK_STREAM )
-    irc.connect ( ( network, port ) )
-    irc.recv ( 4096 )
-    irc.send ( 'NICK ' + botNick + '\r\n' )
-    irc.send ( 'USER ' + botNick + " " + hostName + " " + serverName + " " + ' :' + realName + " " + '\r\n' )
-    for channel in channelList:
-        irc.send ( 'JOIN ' + channel + '\r\n' )
-    #Send entrance banner
-    irc.send ( "PRIVMSG " + channelList[0] + " :Greetings, mortal.\r\n" )
 
 
 

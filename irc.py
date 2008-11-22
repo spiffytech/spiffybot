@@ -1,8 +1,9 @@
 import socket
 
 class irc():
-    def __init__(self, nick, network, port, hostName, serverName, realName, channel):
+    def __init__(self, nick, network, port, hostName, serverName, realName, channel, debug=0):
         self.nick = nick
+        self.debug = debug
         global chat
         chat = socket.socket ( socket.AF_INET, socket.SOCK_STREAM )
         chat.connect (( network, port ))
@@ -14,7 +15,6 @@ class irc():
 
 
     def send(self, destination, reply, nick=""):
-        print "self.nick = " + self.nick
         if not nick == "": #Default is no nick to respond to. If for some reason we should respond to a specific nick...
             chat.send ( 'PRIVMSG ' +  destination + ' :' + nick + ': ' + reply + '\r\n' )
         else:
@@ -31,9 +31,11 @@ class irc():
     #Get the next message from the server
     def getMsg(self):
         while not locals().has_key("message"):
-            print "waiting..."
+            if self.debug == 1:
+                print "waiting..."
             data = chat.recv(4096) #Get message from the server
-            print "got data"
+            if self.debug == 1:
+                print "got data"
 
             #Occasionally respond to connection check by IRC server
             if data.find ( 'PING' ) != -1: #receive "ping"
@@ -47,6 +49,4 @@ class irc():
                 sender = data.split ( '!' ) [ 0 ].replace ( ':', '' ) #Nick that sent the message
                 destination = ''.join ( data.split ( ':' ) [ :2 ] ).split ( ' ' ) [ -2 ] #Message the channel came from
 
-        if message.find("VERSION"):
-            print "data = " + data
         return [message, sender, destination]
