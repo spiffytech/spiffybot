@@ -26,6 +26,6 @@ def checkWoot(force=False):
         return ""
     latestTitle = title
     latestPrice = price
-    return "Woot! - %s --- %s --- %s percent left! --- %s" % (latestTitle, str(latestPrice), str(soldout), buylink)
+    return "Woot! - %s --- %s --- %s%% left! --- %s" % (latestTitle, str(latestPrice), str(soldout), buylink)
 
 #print checkWoot()

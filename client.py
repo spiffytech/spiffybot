@@ -44,7 +44,8 @@ def main():
         childLoop(chat)
 
 
-    chat.send(channelList[0], "Greetings, mortal.")
+    # Send channel greeting
+#    chat.send(channelList[0], "Greetings, mortal.")
     # Message reading loop
     while True:
         data = chat.getMsg()  # Get message from server
@@ -95,12 +96,14 @@ def runCommand(command, args):
     return reply
 
 def childLoop(chat):
-    # Check woot.com for a change
-    woot = wootoff.checkWoot()
-    if woot != "" :  # Only print if woot updates
-        chat.send(destination, woot)
+    print "Starting child loop..."
+    while 1:
+        # Check woot.com for a change
+        woot = wootoff.checkWoot()
+        if woot != "" :  # Only print if woot updates
+            chat.send(channelList[0], woot)
 
-    time.sleep(1)
+        sleep(10)
 
 
 
