@@ -52,10 +52,6 @@ def main():
         nick = data[1]
         destination = data[2]
 
-        # Check woot.com for a change
-        woot = wootoff.checkWoot()
-        if woot != "" and not (message.startswith(botNick) or message.startswith("!")):  # Only print if woot updates, and this isn't an explicit woot command call
-            chat.send(destination, woot)
 
         # Parse command from message
         if message.startswith("!"):  # !calc 2*2
@@ -99,7 +95,12 @@ def runCommand(command, args):
     return reply
 
 def childLoop(chat):
-    chat.send("#bottest", "Child!")
+    # Check woot.com for a change
+    woot = wootoff.checkWoot()
+    if woot != "" :  # Only print if woot updates
+        chat.send(destination, woot)
+
+    time.sleep(1)
 
 
 
