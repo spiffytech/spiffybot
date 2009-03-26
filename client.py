@@ -8,7 +8,10 @@ import socket
 from optparse import OptionParser
 
 import commands
+import weather
 import irc
+import mcode
+import wootoff
 import utils
 
 
@@ -17,8 +20,8 @@ botNick = "spiffybot"
 hostName = "My Machine"
 serverName= "BotLand" #Nickname for origin of connection (your house's network)
 realName = "Mr. Bot Dude" #Shows up under whois
-#channelList = ["#bottest", "#ncsulug", "#nilbus"]
-channelList = ["#bottest"] #List of channels to connect to at startup
+channelList = ["#ncsulug", "#nilbus", "#bottest"]
+#channelList = ["#bottest"] #List of channels to connect to at startup
 network = 'irc.freenode.net' #IRC server to connect to
 port = 6667 #Connection port
 
@@ -34,13 +37,20 @@ def main():
 #    print args
     
     chat = irc.irc(botNick, network, 6667, hostName, serverName, realName, channelList[0], debug=0)
-    chat.send(channelList[0], "Greetings, mortal.")
+#    for channel in range(1, len(channelList)):
+#        chat.send("/join %s" % channel)
+#    chat.send(channelList[0], "Greetings, mortal.")
     # Message reading loop
     while True:
         data = chat.getMsg()  # Get message from server
         message = data[0]
         nick = data[1]
         destination = data[2]
+
+        # Check woot.com for a change
+        woot = wootoff.checkWoot()
+        if woot != "" and not (message.startswith(botNick) or message.startswith("!")):  # Only print if woot updates, and this isn't an explicit woot command call
+            chat.send(destination, woot, "")
 
         # Parse command from message
         if message.startswith("!"):  # !calc 2*2
@@ -69,8 +79,17 @@ def runCommand(command, args):
         reply = os.popen("who").read()
     elif command == "whois":
         reply = commands.whoIs()
+    elif command == "encode":
+        reply = mcode.encode(args)
+    elif command == "decode":
+        reply = mcode.decode(args)
+    elif command == "weather":
+        reply = weather.getWeather(args)
+    elif command == "woot":
+        reply = wootoff.checkWoot(force=True)
+    
     else:
-        reply = "No such command"
+        reply = "Maybe."
 
     return reply
 

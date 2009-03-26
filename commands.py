@@ -26,4 +26,4 @@ def getLoad():
     return " ".join(uptime.split(" ")[11:])
 
 def whoIs():
-    return "".join(system, platform.release())
+    return system.join.join(platform.release())
