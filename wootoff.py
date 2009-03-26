@@ -28,4 +28,4 @@ def checkWoot(force=False):
     latestPrice = price
     return "Woot! - %s --- %s --- %s percent left! --- %s" % (latestTitle, str(latestPrice), str(soldout), buylink)
 
-print checkWoot()
+#print checkWoot()

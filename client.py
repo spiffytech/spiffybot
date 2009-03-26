@@ -4,6 +4,8 @@
 
 import re
 import os
+import sys
+from time import sleep
 import socket
 from optparse import OptionParser
 
@@ -20,8 +22,8 @@ botNick = "spiffybot"
 hostName = "My Machine"
 serverName= "BotLand" #Nickname for origin of connection (your house's network)
 realName = "Mr. Bot Dude" #Shows up under whois
-channelList = ["#ncsulug", "#nilbus", "#bottest"]
-#channelList = ["#bottest"] #List of channels to connect to at startup
+#channelList = ["#ncsulug", "#nilbus", "#bottest"]
+channelList = ["#bottest"] #List of channels to connect to at startup
 network = 'irc.freenode.net' #IRC server to connect to
 port = 6667 #Connection port
 
@@ -37,9 +39,12 @@ def main():
 #    print args
     
     chat = irc.irc(botNick, network, 6667, hostName, serverName, realName, channelList[0], debug=0)
-#    for channel in range(1, len(channelList)):
-#        chat.send("/join %s" % channel)
-#    chat.send(channelList[0], "Greetings, mortal.")
+    pid = os.fork()
+    if pid:
+        childLoop(chat)
+
+
+    chat.send(channelList[0], "Greetings, mortal.")
     # Message reading loop
     while True:
         data = chat.getMsg()  # Get message from server
@@ -50,7 +55,7 @@ def main():
         # Check woot.com for a change
         woot = wootoff.checkWoot()
         if woot != "" and not (message.startswith(botNick) or message.startswith("!")):  # Only print if woot updates, and this isn't an explicit woot command call
-            chat.send(destination, woot, "")
+            chat.send(destination, woot)
 
         # Parse command from message
         if message.startswith("!"):  # !calc 2*2
@@ -92,6 +97,11 @@ def runCommand(command, args):
         reply = "Maybe."
 
     return reply
+
+def childLoop(chat):
+    chat.send("#bottest", "Child!")
+
+
 
 try: 
     main()
