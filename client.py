@@ -17,7 +17,7 @@ import wootoff
 import utils
 
 
-#Connection vars
+# Connection vars
 botNick = "spiffybot"
 hostName = "My Machine"
 serverName= "BotLand" #Nickname for origin of connection (your house's network)
@@ -27,6 +27,9 @@ channelList = ["#bottest"] #List of channels to connect to at startup
 network = 'irc.freenode.net' #IRC server to connect to
 port = 6667 #Connection port
 
+
+# Monitoring prefs
+wootWatch = 0
 
 
 def main():
@@ -89,6 +92,9 @@ def runCommand(command, args):
         reply = weather.getWeather(args)
     elif command == "woot":
         reply = wootoff.checkWoot(force=True)
+    elif command == "wootWatch":
+        wootWatch = int(args)
+        reply = "Assigned wootWatch to " + args
     
     else:
         reply = "Maybe."
@@ -99,9 +105,10 @@ def childLoop(chat):
     print "Starting child loop..."
     while 1:
         # Check woot.com for a change
-        woot = wootoff.checkWoot()
-        if woot != "" :  # Only print if woot updates
-            chat.send(channelList[0], woot)
+        if wootWatch == 1:
+            woot = wootoff.checkWoot()
+            if woot != "" :  # Only print if woot updates
+                chat.send(channelList[0], woot)
 
         sleep(10)
 

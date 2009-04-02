@@ -14,7 +14,10 @@ def checkWoot(force=False):
     global latestTitle
     global latestPrice
     global souldout
-    rss = ET.parse(urllib.urlopen(url)).getroot()
+    try:
+        rss = ET.parse(urllib.urlopen(url)).getroot()
+    except:
+        return ""
     title = rss.findall("channel/item/title")[0].text
     price = rss.findall("channel/item/{http://www.woot.com/}price")[0].text
     soldout = rss.findall("channel/item/{http://www.woot.com/}soldoutpercentage")[0].text

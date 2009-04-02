@@ -13,6 +13,7 @@ class irc():
         self.join(channel)
 
     def send(self, destination, reply, nick=""):
+        '''Sends a message to the server, optionally triggering a nick highlight'''
         if not nick == "":  # Default is no nick to respond to. If for some reason we should respond to a specific nick...
             chat.send ( 'PRIVMSG ' +  destination + ' :' + nick + ': ' + reply + '\r\n' )
         else:
@@ -22,13 +23,16 @@ class irc():
         print self.nick, self.debug
 
     def join(self, channel):
+        ''' Join a channel'''
         chat.send ( 'JOIN ' + channel + '\r\n' ) 
 
     def part(self, channel):
+        '''Leave a channel'''
         chat.send( "PART " + channel + "\r\n")
 
     # Get the next message from the server
     def getMsg(self):
+        '''Gets the next message from the server'''
         while not locals().has_key("message"):
             if self.debug == 1:
                 print "waiting..."
