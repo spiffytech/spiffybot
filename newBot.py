@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import irclib
 
 # Connection information
@@ -7,7 +9,13 @@ channel = '#bottest'
 nick = 'spiffybot'
 realName = 'spiffybot'
 
+
+commands = {}
+execfile("commands.py")
+
+
 def main():
+
     # Create an IRC object
     irc = irclib.IRC()
 #    irclib.DEBUG = True
@@ -23,6 +31,7 @@ def main():
 
     # Jump into an infinite loop
     irc.process_forever()
+
 
 
 def gotMessage(connection, event):
@@ -42,17 +51,6 @@ def gotMessage(connection, event):
 
         connection.privmsg(channel, reply)
 
-
-import commands as utils, mcode, weather, tiny, wootoff
-
-commands = {
-    "ip": utils.getIP,
-    "load": utils.getLoad,
-    "encode": mcode.encode,
-    "decode": mcode.decode,
-    "weather": weather.getWeather,
-    "woot": wootoff.checkWoot,
-}
 
 
 if __name__ == "__main__":
