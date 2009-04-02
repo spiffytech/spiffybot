@@ -10,7 +10,7 @@ soldout = 1
 
 url = "http://www.woot.com/salerss.aspx"
 
-def checkWoot(force=False):
+def checkWoot(force=True):
     global latestTitle
     global latestPrice
     global souldout

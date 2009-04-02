@@ -26,14 +26,32 @@ def main():
 
 
 def gotMessage(connection, event):
-    sender = event.source().split("!")[0]
-    eventArgs = event.arguments()[0].split()
-    if eventArgs[0].startswith(nick):
-        command = eventArgs[1]
-        args = eventArgs[2:]  # Inexplicably, this will never throw an index-out-of-range error
-        print eventArgs
-commands = {
+    '''Someone sent a message to a channel!'''
+    sender = event.source().split("!")[0]  # Who sent the message
+    message = event.arguments()[0].split()  # What was the message?
+    if message[0].startswith(nick):  # If it's a command for us:
+        command = message[1]
+        args = " ".join(message[2:])  # Quite unexplainably, this will never throw an index-out-of-range error
+        try:  # See if we have a command in our list to match what the user told us to do
+            if args != "":  # Not all commands take arguments
+                reply = commands[command](args)
+            else:
+                reply = commands[command]()
+        except KeyError:
+            reply = "Maybe."
 
+        connection.privmsg(channel, reply)
+
+
+import commands as utils, mcode, weather, tiny, wootoff
+
+commands = {
+    "ip": utils.getIP,
+    "load": utils.getLoad,
+    "encode": mcode.encode,
+    "decode": mcode.decode,
+    "weather": weather.getWeather,
+    "woot": wootoff.checkWoot,
 }
 
 
