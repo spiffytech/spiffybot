@@ -10,7 +10,7 @@ soldout = 1
 
 url = "http://www.woot.com/salerss.aspx"
 
-def checkWoot(force=True):
+def checkWoot(irc, channel, args="", force=True):
     global latestTitle
     global latestPrice
     global souldout
@@ -29,6 +29,6 @@ def checkWoot(force=True):
         return ""
     latestTitle = title
     latestPrice = price
-    return "Woot! - %s --- %s --- %s%% left! --- %s" % (latestTitle, str(latestPrice), str(soldout), buylink)
+    irc.privmsg(channel, "Woot! - %s --- %s --- %s%% left! --- %s" % (latestTitle, str(latestPrice), str(soldout), buylink))
 
 #print checkWoot()

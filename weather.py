@@ -1,7 +1,7 @@
 import urllib, re
 from xml.dom import minidom
 
-def getWeather(place):
+def getWeather(irc, channel, place):
     city = place.partition(", ")[0].replace(" ", "%20")
     state = place.partition(", ")[2]
 
@@ -16,4 +16,4 @@ def getWeather(place):
     summary = xmldoc.getElementsByTagName("description")[1].firstChild.data
     reply = summary + " (" + pubDate + ")"
 
-    return reply
+    irc.privmsg(channel, reply)

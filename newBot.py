@@ -34,27 +34,25 @@ def main():
 def gotMessage(connection, event):
     '''Someone sent a message to a channel!'''
     sender = event.source().split("!")[0]  # Who sent the message
-    message = event.arguments()[0].split()  # What was the message?
+    message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
     if message[0].startswith(nick):  # If it's a command for us:
         command = message[1]
         args = " ".join(message[2:])  # Quite unexplainably, this will never throw an index-out-of-range error
-        try:  # See if we have a command in our list to match what the user told us to do
-            if args != "":  # Not all commands take arguments
-                reply = commands.cmds[command](args)
-            else:
-                reply = commands.cmds[command]()
-        except KeyError:
-            if command == "update":
-                updateCommands()
-            reply = "Maybe."
 
-        connection.privmsg(channel, reply)
+        # Run the specified command
+        if command == "update":
+            updateCommands()  # Update the command list
+        try:  # See if we have a command in our list to match what the user told us to do; if so, do it.
+            commands.cmds[command](connection, event.target(), args)
+        except KeyError:  # OK, so we don't have a simple command. Look for a more advanced (e.g.,"natural language") command
+            reply = "Maybe."  # Respond with this if we don't have anything else to respond with
+            connection.privmsg(channel, reply)
 
 
 
 def updateCommands():
+    '''Reload the main commands file'''
     reload(commands)
-    print commands.cmds
 
 
 

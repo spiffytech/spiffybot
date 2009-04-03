@@ -28,7 +28,7 @@ code = {
     " ": "  ",
     ".": "   ",
 }
-def encode(s):
+def encode(irc, channel, s):
     encoded = ""
     for letter in s: 
         letter = letter.lower()
@@ -36,11 +36,11 @@ def encode(s):
             encoded += code[letter] + " "
         except:
             encoded += letter
-    return encoded
+    irc.privmsg(channel, encoded)
 
 
 
-def decode(m):
+def decode(irc, channel, m):
     s = ""
     codes = m.split()
     for char in codes:  # For every morse-encoded letter we were passed
@@ -49,4 +49,4 @@ def decode(m):
                 s += letter
                 break
 
-    return s
+    irc.privmsg(channel, s)
