@@ -3,7 +3,7 @@ import tiny
 import weather
 import wootoff
 
-commands = {
+cmds = {
     "encode": mcode.encode,
     "decode": mcode.decode,
     "weather": weather.getWeather,

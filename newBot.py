@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import irclib
+import commands
 
 # Connection information
 network = 'irc.freenode.net'
@@ -8,10 +9,6 @@ port = 6667
 channel = '#bottest'
 nick = 'spiffybot'
 realName = 'spiffybot'
-
-
-commands = {}
-execfile("commands.py")
 
 
 def main():
@@ -43,13 +40,21 @@ def gotMessage(connection, event):
         args = " ".join(message[2:])  # Quite unexplainably, this will never throw an index-out-of-range error
         try:  # See if we have a command in our list to match what the user told us to do
             if args != "":  # Not all commands take arguments
-                reply = commands[command](args)
+                reply = commands.cmds[command](args)
             else:
-                reply = commands[command]()
+                reply = commands.cmds[command]()
         except KeyError:
+            if command == "update":
+                updateCommands()
             reply = "Maybe."
 
         connection.privmsg(channel, reply)
+
+
+
+def updateCommands():
+    reload(commands)
+    print commands.cmds
 
 
 
