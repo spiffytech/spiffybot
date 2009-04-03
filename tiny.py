@@ -3,7 +3,7 @@
 
 import urllib
 
-def tiny_url(irc, channel, url):
+def tiny_url(url, irc=None, channel=None):
     '''Converts a long url to a tinyurl'''
     # URL must start with HTTP!
     if not url.startswith("http://"):

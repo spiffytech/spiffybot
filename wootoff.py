@@ -23,7 +23,7 @@ def checkWoot(irc, channel, args="", force=True):
     soldout = rss.findall("channel/item/{http://www.woot.com/}soldoutpercentage")[0].text
     soldout = 100 - (float(soldout) * 100)
     buylink = rss.findall("channel/item/{http://www.woot.com/}purchaseurl")[0].text
-    buylink = tiny.tiny_url(buylink)
+#    buylink = tiny.tiny_url(url=buylink)
 
     if latestTitle == title and force != True:
         return ""
