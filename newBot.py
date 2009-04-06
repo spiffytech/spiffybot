@@ -15,7 +15,7 @@ def main():
 
     # Create an IRC object
     irc = irclib.IRC()
-    irclib.DEBUG = True
+#    irclib.DEBUG = True
 
     # Create a server object, connect and join the channel
     server = irc.server()
@@ -27,6 +27,9 @@ def main():
     irc.add_global_handler("pubmsg", gotMessage)
     irc.add_global_handler("privmsg", gotMessage)
     irc.add_global_handler("join", handleJoin)
+    irc.add_global_handler("part", handleJoin)
+    irc.add_global_handler("kick", handleJoin)
+    irc.add_global_handler("invite", handleInvite)
 
 
     # Jump into an infinite loop
@@ -36,6 +39,16 @@ def main():
 
 def handleJoin(connection, event):
     pass
+
+def handlePart(connection, event):
+    pass
+
+def handleKick(connection, event):
+    pass
+
+def handleInvite(connection, event):
+    connection.join(event.arguments()[0])
+
 
 def gotMessage(connection, event):
     '''Someone sent a message to a channel!'''
