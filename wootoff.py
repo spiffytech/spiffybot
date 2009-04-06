@@ -10,7 +10,8 @@ soldout = 1
 
 url = "http://www.woot.com/salerss.aspx"
 
-def checkWoot(irc, channel, args="", force=True):
+def checkWoot(irc, event, args="", force=True):
+    channel = event.target()
     global latestTitle
     global latestPrice
     global souldout

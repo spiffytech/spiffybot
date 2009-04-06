@@ -1,7 +1,8 @@
 import urllib, re
 from xml.dom import minidom
 
-def getWeather(irc, channel, place):
+def getWeather(irc, event, place):
+    channel = event.target()
     city = place.partition(", ")[0].replace(" ", "%20")
     state = place.partition(", ")[2]
 

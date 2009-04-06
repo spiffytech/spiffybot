@@ -15,21 +15,26 @@ def main():
 
     # Create an IRC object
     irc = irclib.IRC()
-#    irclib.DEBUG = True
+    irclib.DEBUG = True
 
     # Create a server object, connect and join the channel
     server = irc.server()
     server.connect(network, port, nick, ircname = realName)
     server.join(channel)
+    server.privmsg(channel, "Feed me.")
 
     # Add event handlers
     irc.add_global_handler("pubmsg", gotMessage)
     irc.add_global_handler("privmsg", gotMessage)
+    irc.add_global_handler("join", handleJoin)
+
 
     # Jump into an infinite loop
     irc.process_forever()
 
 
+
+def handleJoin(connection, event):
 
 def gotMessage(connection, event):
     '''Someone sent a message to a channel!'''
@@ -43,7 +48,7 @@ def gotMessage(connection, event):
         if command == "update":
             updateCommands()  # Update the command list
         try:  # See if we have a command in our list to match what the user told us to do; if so, do it.
-            commands.cmds[command](connection, event.target(), args)
+            commands.cmds[command](connection, event, args)
         except KeyError:  # OK, so we don't have a simple command. Look for a more advanced (e.g.,"natural language") command
             reply = "Maybe."  # Respond with this if we don't have anything else to respond with
             connection.privmsg(channel, reply)

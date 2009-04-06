@@ -28,7 +28,8 @@ code = {
     " ": "  ",
     ".": "   ",
 }
-def encode(irc, channel, s):
+def encode(irc, event, s):
+    channel = event.target()
     encoded = ""
     for letter in s: 
         letter = letter.lower()
@@ -40,7 +41,8 @@ def encode(irc, channel, s):
 
 
 
-def decode(irc, channel, m):
+def decode(irc, event, m):
+    channel = event.target()
     s = ""
     codes = m.split()
     for char in codes:  # For every morse-encoded letter we were passed

@@ -7,15 +7,17 @@ import re
 import urllib
 
 
-def calc(irc, channel, equation):
+def calc(irc, event, equation):
     '''Core calculator function'''
+    channel = event.target()
     opener = myOpener()
     page = opener.open("http://www.google.com/search?num=1&q=%s" % urllib.quote(equation)).read()  # Get the page from Google
     try:
-        answer = re.search("<h2 class=r style=\"font-size:\d+%\"><b>(?P<answer>.*)</b></h2>", page).groups()[0]
-        irc.privmsg(channel, answer)
+        reply = re.search("<h2 class=r style=\"font-size:\d+%\"><b>(?P<answer>.*)</b></h2>", page).groups()[0]
     except:
-        irc.privmsg(channel, "Google doesn't think that question is worth answering")
+        reply = "Google doesn't think that question is worth answering"
+
+    irc.privmsg(channel, reply)
 
 
 

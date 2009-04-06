@@ -3,14 +3,19 @@
 
 import urllib
 
-def tiny_url(url, irc=None, channel=None):
+def tiny_url(url, irc=None, event=None):
+    if event != None:
+        channel = event.target()
     '''Converts a long url to a tinyurl'''
     # URL must start with HTTP!
     if not url.startswith("http://"):
         url = "http://" + url
     apiurl = "http://tinyurl.com/api-create.php?url="
     tinyurl = urllib.urlopen(apiurl + url).read()
-    irc.privmsg(channel, tinyurl)
+    if event != None:
+        irc.privmsg(channel, tinyurl)
+    else:
+        return tinyurl
 
 def content_tiny_url(irc, channel, content):
     regex_url = r'http:\/\/([\w.]+\/?)\S*'

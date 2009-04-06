@@ -5,8 +5,9 @@
 
 from time import sleep
 
-def kill(irc, channel, target):
+def kill(irc, event, target):
     '''Attempts to boot someone with an excess flood'''
+    channel = event.target()
     for i in range(0, 25):
         irc.privmsg(channel, "%s, die!" % target)
         if i % 25 == 0:
