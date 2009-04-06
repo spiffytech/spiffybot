@@ -35,6 +35,7 @@ def main():
 
 
 def handleJoin(connection, event):
+    pass
 
 def gotMessage(connection, event):
     '''Someone sent a message to a channel!'''
