@@ -7,7 +7,7 @@ import os
 # Connection information
 network = 'irc.freenode.net'
 port = 6667
-channel = '##bottest'
+channel = '#bottest'
 nick = 'spiffybot'
 realName = 'spiffybot'
 
@@ -30,7 +30,6 @@ def main():
     irc.add_global_handler("join", handleJoin)
     irc.add_global_handler("part", handleJoin)
     irc.add_global_handler("kick", handleJoin)
-    irc.add_global_handler("invite", handleInvite)
 
 
     # Fork off our IRC instance
@@ -50,9 +49,6 @@ def handlePart(connection, event):
 def handleKick(connection, event):
     pass
 
-def handleInvite(connection, event):
-    connection.join(event.arguments()[0])
-
 
 def gotMessage(connection, event):
     '''Someone sent a message to a channel!'''
@@ -63,8 +59,14 @@ def gotMessage(connection, event):
         args = " ".join(message[2:])  # Quite unexplainably, this will never throw an index-out-of-range error
 
         # Run the specified command
+        # Start with a few commands that are best (thanks to coding structure) parsed first
         if command == "update":
             updateCommands()  # Update the command list
+            return
+        elif command == "join":
+            connection.join(args)
+            return
+
         try:  # See if we have a command in our list to match what the user told us to do; if so, do it.
             commands.cmds[command](connection, event, args)
         except KeyError:  # OK, so we don't have a simple command. Look for a more advanced (e.g.,"natural language") command
