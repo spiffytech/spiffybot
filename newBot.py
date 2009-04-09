@@ -25,8 +25,8 @@ def main():
     server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
 
     # Add event handlers
-    irc.add_global_handler("pubmsg", gotMessage)
-    irc.add_global_handler("privmsg", gotMessage)
+    irc.add_global_handler("pubmsg", handleMessage)
+    irc.add_global_handler("privmsg", handleMessage)
     irc.add_global_handler("join", handleJoin)
     irc.add_global_handler("part", handleJoin)
     irc.add_global_handler("kick", handleJoin)
@@ -51,7 +51,7 @@ def handleKick(connection, event):
 ###################################################################
 
 
-def gotMessage(connection, event):
+def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
     sender = event.source().split("!")[0]  # Who sent the message
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
