@@ -2,11 +2,12 @@
 
 import irclib
 import commands
+import os
 
 # Connection information
 network = 'irc.freenode.net'
 port = 6667
-channel = '#bottest'
+channel = '##bottest'
 nick = 'spiffybot'
 realName = 'spiffybot'
 
@@ -21,7 +22,7 @@ def main():
     server = irc.server()
     server.connect(network, port, nick, ircname = realName)
     server.join(channel)
-    server.privmsg(channel, "Feed me.")
+    server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
 
     # Add event handlers
     irc.add_global_handler("pubmsg", gotMessage)
@@ -32,7 +33,10 @@ def main():
     irc.add_global_handler("invite", handleInvite)
 
 
-    # Jump into an infinite loop
+    # Fork off our IRC instance
+    pid = os.fork()
+    if pid:
+        child_process(server)
     irc.process_forever()
 
 
@@ -72,6 +76,13 @@ def gotMessage(connection, event):
 def updateCommands():
     '''Reload the main commands file'''
     reload(commands)
+
+
+
+def child_process(conn):
+    while 1:
+        msg = raw_input("Talk to channel: ")
+        conn.privmsg(channel, msg)
 
 
 
