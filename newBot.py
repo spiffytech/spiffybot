@@ -24,7 +24,7 @@ def main():
         server.join(channel)
     server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
 
-    # Add event handlers
+    # Add handlers for various IRC events
     irc.add_global_handler("pubmsg", handleMessage)
     irc.add_global_handler("privmsg", handleMessage)
     irc.add_global_handler("join", handleJoin)
@@ -36,6 +36,8 @@ def main():
     pid = os.fork()
     if pid:
         child_process(server)
+
+    # In the parent process, start monitoring the channel
     irc.process_forever()
 
 
@@ -55,7 +57,6 @@ def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
     sender = event.source().split("!")[0]  # Who sent the message
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
-    print "\n" + str(message)
     if message[0].startswith(nick) or not event.target().startswith("#"):  # If it's a command for us:
         if not message[0].startswith(nick):  # No bot nick passed by a private message command
             command = message[0]
@@ -81,7 +82,7 @@ def handleMessage(connection, event):
             commands.cmds[command](connection, event, args)
         except KeyError:  # OK, so we don't have a simple command. Look for a more advanced (e.g.,"natural language") command
             reply = "Maybe."  # Respond with this if we don't have anything else to respond with
-            connection.privmsg(channel, reply)
+            connection.privmsg(event.target(), reply)
 
 
 
