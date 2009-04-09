@@ -93,8 +93,13 @@ def updateCommands():
 
 
 def child_process(conn):
+    if not "channel" in locals():
+        channel = channels[0]
     while 1:
         msg = raw_input("Talk to channel: ")
+        if msg.startswith("="):
+            channel = msg.split("=")[1]
+            continue
         conn.privmsg(channel, msg)
 
 
