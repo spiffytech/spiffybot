@@ -7,21 +7,21 @@ import os
 # Connection information
 network = 'irc.freenode.net'
 port = 6667
-channel = '#bottest'
+channels = ['#bottest',]
 nick = 'spiffybot'
 realName = 'spiffybot'
 
 
 def main():
-
     # Create an IRC object
     irc = irclib.IRC()
-#    irclib.DEBUG = True
+#    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
     # Create a server object, connect and join the channel
     server = irc.server()
     server.connect(network, port, nick, ircname = realName)
-    server.join(channel)
+    for channel in channels:
+        server.join(channel)
     server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
 
     # Add event handlers
@@ -39,7 +39,7 @@ def main():
     irc.process_forever()
 
 
-
+########## Functions to handle various in-channel events ##########
 def handleJoin(connection, event):
     pass
 
@@ -48,6 +48,7 @@ def handlePart(connection, event):
 
 def handleKick(connection, event):
     pass
+###################################################################
 
 
 def gotMessage(connection, event):
@@ -56,7 +57,7 @@ def gotMessage(connection, event):
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
     print "\n" + str(message)
     if message[0].startswith(nick) or not event.target().startswith("#"):  # If it's a command for us:
-        if not message[0].startswith(nick):  # No bot nick in a private message command
+        if not message[0].startswith(nick):  # No bot nick passed by a private message command
             command = message[0]
             args = " ".join(message[1:])
         else:
