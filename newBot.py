@@ -57,7 +57,7 @@ def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
     sender = event.source().split("!")[0]  # Who sent the message
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
-    if message[0].startswith(nick) or not event.target().startswith("#"):  # If it's a command for us:
+    if (message[0].startswith(nick) or not event.target().startswith("#")) and len(message) > 1:  # If it's a command for us:
         if not message[0].startswith(nick):  # No bot nick passed by a private message command
             command = message[0]
             args = " ".join(message[1:])
@@ -93,6 +93,7 @@ def updateCommands():
 
 
 def child_process(conn):
+    '''Child process main function- reads input from the user and sends it to the channels'''
     if not "channel" in locals():
         channel = channels[0]
     while 1:
