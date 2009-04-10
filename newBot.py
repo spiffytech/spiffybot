@@ -97,8 +97,12 @@ def child_process(conn):
         channel = channels[0]
     while 1:
         msg = raw_input("Talk to channel: ")
-        if msg.startswith("="):
-            channel = msg.split("=")[1]
+        if msg.startswith("="):  # Set the channel we want to talk to
+            # Examples: "=#ncsulug", "=#ncsulug Send this message!"
+            msg = msg.split()
+            channel = msg[0].split("=")[1]
+            if len(msg) > 1:
+                conn.privmsg(channel, " ".join(msg[1:]))
             continue
         conn.privmsg(channel, msg)
 
