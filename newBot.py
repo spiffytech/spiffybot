@@ -64,26 +64,24 @@ def main():
 
 ########## Functions to handle channel user connection events ##########
 def handleJoin(connection, event):
-    print str(connection)
-    print str(event)
-    recordEvent(connection, event, "join")
+    recordEvent(connection, event)
 
 def handlePart(connection, event):
-    recordEvent(connection, event, "part")
+    recordEvent(connection, event)
 
 def handleQuit(connection, event):
-    recordEvent(connection, event, "quit")
+    recordEvent(connection, event)
 
 def handleKick(connection, event):
-    recordEvent(connection, event, "kick")
+    recordEvent(connection, event)
 
-def recordEvent(connection, event, type):
+def recordEvent(connection, event):
     global dbConn
     global cursor
     user = event.source().split('!')[0]
     alteredTime = str(time.time())
     channel = event.target()
-    cursor.execute("insert into connevents values ('%s', '%s', '%s', '%s')" % (user, type, channel, alteredTime))
+    cursor.execute("insert into connevents values ('%s', '%s', '%s', '%s')" % (user, event.eventtype(), channel, alteredTime))
     dbConn.commit()
 ########################################################################
 
