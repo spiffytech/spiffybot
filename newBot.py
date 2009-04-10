@@ -83,7 +83,7 @@ def recordEvent(event):
     alteredTime = str(time.time())
     channel = event.target()
     type = event.eventtype()
-    cursor.execute("insert into connevents values ('%s', '%s', '%s', '%s')" % (user, type, channel, alteredTime))
+    cursor.execute("insert into connevents values (?, ?, ?, ?)", (user, type, channel, alteredTime))
     dbConn.commit()
 ########################################################################
 
@@ -94,7 +94,7 @@ def handleTopic(connection, event):
     alterer = event.source().split('!')[0]
     topic = event.arguments()[0]
     alteredTime = str(time.time())
-    cursor.execute("insert into topic_history values ('%s', '%s', '%s', '%s')" % (topic, alteredTime, alterer, event.target()))
+    cursor.execute("insert into topic_history values (?, ?, ?, ?)", (topic, alteredTime, alterer, event.target()))
     dbConn.commit()
 
 
