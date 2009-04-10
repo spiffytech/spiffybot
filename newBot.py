@@ -100,9 +100,18 @@ def handleTopic(connection, event):
 
 def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
+
+    # Parse the raw IRC data contents
     sender = event.source().split("!")[0]  # Who sent the message
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
 
+    # First, record the message in our logs
+    global dbConn
+    global cursor
+    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), " ".join(message), str(time.time())))
+    dbConn.commit()
+
+    # Next, see if the message is something we care about (i.e., a command)
     if (message[0].startswith(nick) or not event.target().startswith("#")) and len(message) > 1:  # If it's a command for us:
         if not message[0].startswith(nick):  # No bot nick passed by a private message command
             command = message[0]
