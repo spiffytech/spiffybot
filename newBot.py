@@ -1,10 +1,28 @@
 #!/usr/bin/env python
+# Brian Cottingham
+# spiffyech@gmail.com
+# 2009-04-09
+# A fairly simple, yet capable, IRC bot
 
 import irclib
 import commands
 import os
+from sqlite3 import dbapi2 as sqlite
+import time
 
-# Connection information
+# Initialize the logs database
+if not os.path.exists("logs.db"):
+    print "Creating new database..."
+    conn = sqlite.connect("logs.db")
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE todos (id INTEGER PRIMARY KEY, completed VARCHAR(5), duedate VARCHAR(30), priority INTEGER, title VARCHAR(150), description VARCHAR(3000))")
+    cursor.execute("create table idmap (id INTEGER, realid INTEGER)")
+    conn.close()
+
+dbConn = sqlite.connect("logs.db")
+cursor = dbConn.cursor()
+
+# IRC connection information
 network = 'irc.freenode.net'
 port = 6667
 channels = ['#bottest',]
@@ -30,6 +48,7 @@ def main():
     irc.add_global_handler("join", handleJoin)
     irc.add_global_handler("part", handleJoin)
     irc.add_global_handler("kick", handleJoin)
+    irc.add_global_handler("topic", handleTopic)
 
 
     # Fork off our IRC instance
@@ -41,7 +60,7 @@ def main():
     irc.process_forever()
 
 
-########## Functions to handle various in-channel events ##########
+########## Functions to handle channel user connection events ##########
 def handleJoin(connection, event):
     pass
 
@@ -50,13 +69,25 @@ def handlePart(connection, event):
 
 def handleKick(connection, event):
     pass
-###################################################################
+########################################################################
+
+
+def handleTopic(connection, event):
+    global dbConn
+    global cursor
+    alterer = event.source().split('!')[0]
+    topic = event.arguments()[0]
+    alteredTime = str(time.time())
+    print "Inserting: %s, %s, %s" % (alterer, topic, alteredTime)
+    cursor.execute("insert into topic_history values ('%s', '%s', '%s', '%s')" % (topic, alteredTime, alterer, event.target()))
+    dbConn.commit()
 
 
 def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
     sender = event.source().split("!")[0]  # Who sent the message
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
+
     if (message[0].startswith(nick) or not event.target().startswith("#")) and len(message) > 1:  # If it's a command for us:
         if not message[0].startswith(nick):  # No bot nick passed by a private message command
             command = message[0]

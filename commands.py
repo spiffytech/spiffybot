@@ -1,4 +1,5 @@
 import calc
+import ircTools
 import mcode
 import pranks
 import tiny
@@ -11,6 +12,7 @@ cmds = {
     "decode": mcode.decode,
     "kill": pranks.kill,
     "tiny": tiny.tiny_url,
+    "topics": ircTools.topics,
     "weather": weather.getWeather,
     "woot": wootoff.checkWoot,
 }
