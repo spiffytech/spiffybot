@@ -11,15 +11,16 @@ from sqlite3 import dbapi2 as sqlite
 import time
 
 # Initialize the logs database
-if not os.path.exists("logs.db"):
+dbName = "logs.db"
+if not os.path.exists(dbName):
     print "Creating new database..."
-    conn = sqlite.connect("logs.db")
+    conn = sqlite.connect(dbName)
     cursor = conn.cursor()
     cursor.execute("CREATE TABLE todos (id INTEGER PRIMARY KEY, completed VARCHAR(5), duedate VARCHAR(30), priority INTEGER, title VARCHAR(150), description VARCHAR(3000))")
     cursor.execute("create table idmap (id INTEGER, realid INTEGER)")
     conn.close()
 
-dbConn = sqlite.connect("logs.db")
+dbConn = sqlite.connect(dbName)
 cursor = dbConn.cursor()
 
 # IRC connection information
@@ -35,23 +36,24 @@ def main():
     irc = irclib.IRC()
 #    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
-    # Create a server object, connect and join the channel
+    # Create a server object, connect and join the channels
     server = irc.server()
     server.connect(network, port, nick, ircname = realName)
     for channel in channels:
         server.join(channel)
     server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
 
-    # Add handlers for various IRC events
+    # Add handler functions for various IRC events
     irc.add_global_handler("pubmsg", handleMessage)
     irc.add_global_handler("privmsg", handleMessage)
     irc.add_global_handler("join", handleJoin)
-    irc.add_global_handler("part", handleJoin)
-    irc.add_global_handler("kick", handleJoin)
+    irc.add_global_handler("part", handlePart)
+    irc.add_global_handler("quit", handleQuit)
+    irc.add_global_handler("kick", handleKick)
     irc.add_global_handler("topic", handleTopic)
 
 
-    # Fork off our IRC instance
+    # Fork off our child process for controller input
     pid = os.fork()
     if pid:
         child_process(server)
@@ -62,13 +64,27 @@ def main():
 
 ########## Functions to handle channel user connection events ##########
 def handleJoin(connection, event):
-    pass
+    print str(connection)
+    print str(event)
+    recordEvent(connection, event, "join")
 
 def handlePart(connection, event):
-    pass
+    recordEvent(connection, event, "part")
+
+def handleQuit(connection, event):
+    recordEvent(connection, event, "quit")
 
 def handleKick(connection, event):
-    pass
+    recordEvent(connection, event, "kick")
+
+def recordEvent(connection, event, type):
+    global dbConn
+    global cursor
+    user = event.source().split('!')[0]
+    alteredTime = str(time.time())
+    channel = event.target()
+    cursor.execute("insert into connevents values ('%s', '%s', '%s', '%s')" % (user, type, channel, alteredTime))
+    dbConn.commit()
 ########################################################################
 
 
@@ -78,7 +94,6 @@ def handleTopic(connection, event):
     alterer = event.source().split('!')[0]
     topic = event.arguments()[0]
     alteredTime = str(time.time())
-    print "Inserting: %s, %s, %s" % (alterer, topic, alteredTime)
     cursor.execute("insert into topic_history values ('%s', '%s', '%s', '%s')" % (topic, alteredTime, alterer, event.target()))
     dbConn.commit()
 
