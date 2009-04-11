@@ -11,6 +11,7 @@ cmds = {
     "encode": mcode.encode,
     "decode": mcode.decode,
     "kill": pranks.kill,
+    "roulette": pranks.roulette,
     "tiny": tiny.tiny_url,
     "topics": ircTools.topics,
     "weather": weather.getWeather,
