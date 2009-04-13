@@ -128,6 +128,11 @@ def handleMessage(connection, event):
         elif command == "join":
             connection.join(args)
             return
+        elif command == "nick":
+            connection.nick(args)
+            global nick
+            nick = args
+            return
         elif command == "get" and args.split()[0] == "out":
             print "Leaving channel" + str(event.target())
             connection.part(event.target())
