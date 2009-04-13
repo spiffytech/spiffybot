@@ -27,7 +27,7 @@ cursor = dbConn.cursor()
 network = 'irc.freenode.net'
 port = 6667
 channels = ['#bottest',]
-nick = 'spiffybot'
+nick = 'theRealSpiffybot'
 realName = 'spiffybot'
 
 

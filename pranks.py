@@ -61,4 +61,4 @@ def roulette(connection, event, args):
         currentBarrel = 7
         bulletLoc = random.randint(1, 6)
         connection.privmsg(event.target(), "RELOAD! *click* *spin*")
-        connection.privmsg(event.target(), random.sample(reloadPhrases))
+        connection.privmsg(event.target(), random.choice(reloadPhrases))
