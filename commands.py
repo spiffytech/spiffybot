@@ -1,3 +1,8 @@
+# Brian Cottingham
+# 2009-04-14
+# holds the dict of commands for our bot to handle. Also executes them. 
+
+
 import calc
 import ircTools
 import mcode

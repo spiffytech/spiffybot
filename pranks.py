@@ -1,7 +1,7 @@
 # Brian Cottingham
 # spiffytech@gmail.com
 # 2009-04-10
-# Various IRC pranks. 
+# Various IRC pranks
 
 import time
 import random
@@ -39,6 +39,8 @@ reloadPhrases = (
 )
 
 def roulette(connection, event, args):
+    '''Plays Russian Roulette. When finished, will try to kick a nick from the channel when hit.'''
+    #TODO: track bullet/chamber on a per-channel basis
     global currentBarrel
     global bulletLoc
 

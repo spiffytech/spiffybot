@@ -1,3 +1,5 @@
+# Brian Cottingham
+# 2009-04-14
 # Converts a long URL into a TinyURL
 # http://snipplr.com/view/7604/python-make-url-address-to-tinyurl/
 
@@ -18,6 +20,7 @@ def tiny_url(url, irc=None, event=None):
         return tinyurl
 
 def content_tiny_url(irc, channel, content):
+    '''No idea what this function is'''
     regex_url = r'http:\/\/([\w.]+\/?)\S*'
     for match in re.finditer(regex_url, content):
         url = match.group(0)

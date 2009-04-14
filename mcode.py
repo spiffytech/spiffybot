@@ -1,3 +1,8 @@
+# Brian Cottingham
+# 2009-04-14
+# Simple morse code conversion. Does not handle Unicode (not that morse code does, either)
+
+
 code = {
     "a": ".-",
     "b": "-...",
@@ -28,7 +33,10 @@ code = {
     " ": "  ",
     ".": "   ",
 }
+
+
 def encode(irc, event, s):
+    '''Encodes a string into morse code'''
     channel = event.target()
     encoded = ""
     for letter in s: 
@@ -42,6 +50,7 @@ def encode(irc, event, s):
 
 
 def decode(irc, event, m):
+    '''Decodes a string from morse code. Relies on standard spacing of characters/words/sentences'''
     channel = event.target()
     s = ""
     codes = m.split()

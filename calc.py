@@ -8,13 +8,13 @@ import urllib
 
 
 def calc(irc, event, equation):
-    '''Core calculator function'''
+    '''Uses Google Calculator to perform calculations'''
     channel = event.target()
-    opener = myOpener()
+    opener = myOpener()  # Good ol' useragent spoofing
     page = opener.open("http://www.google.com/search?num=1&q=%s" % urllib.quote(equation)).read()  # Get the page from Google
     try:
-        reply = re.search("<h2 class=r style=\"font-size:\d+%\"><b>(?P<answer>.*)</b></h2>", page).groups()[0]
-    except:
+        reply = re.search("<h2 class=r style=\"font-size:\d+%\"><b>(?P<answer>.*)</b></h2>", page).groups()[0]  # Grab the calc output
+    except:  # Couldn't find the calc output (note that calc (presently) only does actual calculations- not time zones, etc.
         reply = "Google doesn't think that question is worth answering"
 
     irc.privmsg(channel, reply)

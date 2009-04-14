@@ -12,13 +12,13 @@ import time
 
 # Initialize the logs database
 dbName = "logs.db"
-if not os.path.exists(dbName):
-    print "Creating new database..."
-    conn = sqlite.connect(dbName)
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE todos (id INTEGER PRIMARY KEY, completed VARCHAR(5), duedate VARCHAR(30), priority INTEGER, title VARCHAR(150), description VARCHAR(3000))")
-    cursor.execute("create table idmap (id INTEGER, realid INTEGER)")
-    conn.close()
+#if not os.path.exists(dbName):
+#    print "Creating new database..."
+#    conn = sqlite.connect(dbName)
+#    cursor = conn.cursor()
+#    cursor.execute("CREATE TABLE todos (id INTEGER PRIMARY KEY, completed VARCHAR(5), duedate VARCHAR(30), priority INTEGER, title VARCHAR(150), description VARCHAR(3000))")
+#    cursor.execute("create table idmap (id INTEGER, realid INTEGER)")
+#    conn.close()
 
 dbConn = sqlite.connect(dbName)
 cursor = dbConn.cursor()
@@ -53,7 +53,7 @@ def main():
     irc.add_global_handler("topic", handleTopic)
 
 
-    # Fork off our child process for controller input
+    # Fork off our child process for operator input
     pid = os.fork()
     if pid:
         child_process(server)
@@ -77,6 +77,7 @@ def handleKick(connection, event):
     recordEvent(event)
 
 def recordEvent(event):
+    '''Log all connection events to the database. No real reason, just for kicks and giggles.'''
     global dbConn
     global cursor
     user = event.source().split('!')[0]
@@ -89,10 +90,12 @@ def recordEvent(event):
 
 
 def handleTopic(connection, event):
+    '''Log topic changes'''
+    # TODO: Log topic when first entering a channel
     global dbConn
     global cursor
-    alterer = event.source().split('!')[0]
-    topic = event.arguments()[0]
+    alterer = event.source().split('!')[0]  # Who changed the topic
+    topic = event.arguments()[0]  # New topic
     alteredTime = str(time.time())
     cursor.execute("insert into topic_history values (?, ?, ?, ?)", (topic, alteredTime, alterer, event.target()))
     dbConn.commit()
@@ -113,7 +116,9 @@ def handleMessage(connection, event):
 
     # Next, see if the message is something we care about (i.e., a command)
     if (message[0].startswith(nick) or not event.target().startswith("#")) and len(message) > 1:  # If it's a command for us:
-        if not message[0].startswith(nick):  # No bot nick passed by a private message command
+        # ^^ startswith: "spiffybot: calc" ; not startswith("#") indicates private message ; len prevents triggers on "spiffybot!"
+        # Trim botnick off of front of public messages to make them match private messages, for list index's sake
+        if not message[0].startswith(nick):  # No bot nick at start of message indicates a command passed in a private message
             command = message[0]
             args = " ".join(message[1:])
         else:
@@ -122,6 +127,7 @@ def handleMessage(connection, event):
 
         # Run the specified command
         # Start with a few commands that are best (thanks to coding structure) parsed first
+        # TODO: Refactor bot to use internal[] and external[] dicts, rather than this if/elif stuff
         if command == "update":
             updateCommands()  # Update the command list
             return
@@ -134,8 +140,7 @@ def handleMessage(connection, event):
             nick = args
             return
         elif (command == "get" and args.split()[0] == "out") or (command == "fail"):
-            print "Leaving channel" + str(event.target())
-            connection.part(event.target())
+            connection.part(event.target(), message="EPIC CRASH!")  # For unknown reasons, the message sending doesn't work
             return
 
         try:  # See if we have a command in our list to match what the user told us to do; if so, do it.
@@ -148,6 +153,7 @@ def handleMessage(connection, event):
 
 def updateCommands():
     '''Reload the main commands file'''
+    # Currently broken
     reload(commands)
 
 
