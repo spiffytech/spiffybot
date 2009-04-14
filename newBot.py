@@ -27,7 +27,7 @@ cursor = dbConn.cursor()
 network = 'irc.freenode.net'
 port = 6667
 channels = ['#bottest',]
-nick = 'theRealSpiffybot'
+nick = 'spiffybot'
 realName = 'spiffybot'
 
 
@@ -133,7 +133,7 @@ def handleMessage(connection, event):
             global nick
             nick = args
             return
-        elif command == "get" and args.split()[0] == "out":
+        elif (command == "get" and args.split()[0] == "out") or (command == "fail"):
             print "Leaving channel" + str(event.target())
             connection.part(event.target())
             return
