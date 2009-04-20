@@ -7,6 +7,7 @@
 import irclib
 import commands
 import os
+import readline
 from sqlite3 import dbapi2 as sqlite
 import time
 
@@ -163,7 +164,7 @@ def child_process(conn):
     if not "channel" in locals():
         channel = channels[0]
     while 1:
-        msg = raw_input("Talk to channel: ")
+        msg = raw_input("Talk to channel: ")  # Get a message from the user
         if msg.startswith("="):  # Set the channel we want to talk to
             # Examples: "=#ncsulug", "=#ncsulug Send this message!"
             msg = msg.split()
