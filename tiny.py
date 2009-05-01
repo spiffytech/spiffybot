@@ -5,7 +5,7 @@
 
 import urllib
 
-def tiny_url(url, irc=None, event=None):
+def tiny_url(irc=None, event=None, url=None):
     if event != None:
         channel = event.target()
     '''Converts a long url to a tinyurl'''
@@ -18,12 +18,3 @@ def tiny_url(url, irc=None, event=None):
         irc.privmsg(channel, tinyurl)
     else:
         return tinyurl
-
-def content_tiny_url(irc, channel, content):
-    '''No idea what this function is'''
-    regex_url = r'http:\/\/([\w.]+\/?)\S*'
-    for match in re.finditer(regex_url, content):
-        url = match.group(0)
-        content = content.replace(url,tiny_url(url))
-
-    irc.privmsg(channel, content)
