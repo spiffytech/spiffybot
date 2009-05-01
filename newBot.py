@@ -4,25 +4,23 @@
 # 2009-04-09
 # A fairly simple, yet capable, IRC bot
 
-import irclib
-import commands
 import os
 import readline
 from sqlite3 import dbapi2 as sqlite
 import time
 
-# Initialize the logs database
-dbName = "logs.db"
-#if not os.path.exists(dbName):
-#    print "Creating new database..."
-#    conn = sqlite.connect(dbName)
-#    cursor = conn.cursor()
-#    cursor.execute("CREATE TABLE todos (id INTEGER PRIMARY KEY, completed VARCHAR(5), duedate VARCHAR(30), priority INTEGER, title VARCHAR(150), description VARCHAR(3000))")
-#    cursor.execute("create table idmap (id INTEGER, realid INTEGER)")
-#    conn.close()
+import irclib
+import commands
+from createDB import createDB
 
+
+# Open the database
+dbName = "logs.db"
+if not os.path.exists(dbName):
+    createDB(dbName)
 dbConn = sqlite.connect(dbName)
 cursor = dbConn.cursor()
+
 
 # IRC connection information
 network = 'irc.freenode.net'
