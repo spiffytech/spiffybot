@@ -16,6 +16,7 @@ def tell(connection, event, args):
 
     sender = event.source().split("!")[0]
     sendee = args.split()[0]
+    channel = event.target()
     message = " ".join(args.split()[1:])
     if len(message.split(" in ")) > 1:
         message = " ".join(message.split(" in ")[:-1])
@@ -31,7 +32,8 @@ def tell(connection, event, args):
         deliver = "%d-%d-%d %d:%d:%d" % (deliver[0], deliver[1], deliver[2], deliver[3], deliver[4], deliver[5])  # Format the deliver into a string for toEpoch()
         deliver = epochTools.toEpoch(deliver, format="%Y-%m-%d %H:%M:%S")  # deliverstamp for DB storage
 
-    cursor.execute("insert into tell (sender, sendee, message, deliver, sent) values (?, ?, ?, ?, ?)", (sender, sendee, message, deliver, time.time()))
+    cursor.execute("insert into tell (sender, sendee, channel, message, deliver, sent) values (?, ?, ?, ?, ?, ?)", (sender, sendee, channel, message, deliver, time.time()))
+    connection.privmsg(event.target(), "Will do!")
     dbConn.commit()
 
 
@@ -49,5 +51,10 @@ def checkTells(connection=None, event=None, args=None):
         cursor.execute("delete from tell where deliver<=?", (currentTime,))
 
     for message in messages:
-        connection.privmsg("#bottest", "%s, message from %s at %s: %s" % (message[1], message[0], epochTools.fromEpoch(message[4]), message[2]))
+        sender = message[0]
+        sendee = message[1]
+        messageText = message[2]
+        channel = message[5]
+        deliveryTime = epochTools.fromEpoch(message[4])
+        connection.privmsg(channel, "%s, message from %s at %s: %s" % (sendee, sender, deliveryTime, messageText))
     dbConn.commit()
