@@ -41,9 +41,7 @@ def main():
     global server
     server = irc.server()
     server.connect(network, port, nick, ircname = realName)
-    for channel in channels:
-        server.join(channel)
-    server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
+    joinChannels()
 
 
     # Add handler functions for various IRC events
@@ -75,12 +73,14 @@ def changeNick(connection=None, event=None, newNick=None):
         newNick = ""
         if len(connection.nickname) < 15:
             connection.nick(connection.nickname +  "_")
+            joinChannels(connection)
         else:
             chars = string.letters + string.numbers
             random.seed(time.time)
             for i in range(0, random.randint(2, len(string.digits)-1)):
                 newNick += chars[random.randint(0, len("".letters)-1)]
             connection.nick(newNick)
+            joinChannels(connection)
 
 
 ########## Functions to handle channel user connection events ##########
@@ -193,6 +193,14 @@ def child_process(conn):
                 conn.privmsg(channel, " ".join(msg[1:]))
             continue
         conn.privmsg(channel, msg)
+
+
+
+def joinChannels(connection=None, event=None):
+    # Join all specified channels at program launch
+    # In Separate function to facilitate joins after nick collision
+    for channel in channels:
+        server.join(channel)
 
 
 
