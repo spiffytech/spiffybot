@@ -168,7 +168,7 @@ def handleMessage(connection, event):
             nick = args
             return
         elif (command == "get" and args.split()[0] == "out") or (command == "fail"):
-            connection.part(event.target(), message="EPIC CRASH!")  # For unknown reasons, the message sending doesn't work
+            connection.part(event.target())
             return
 
         try:  # See if we have a command in our list to match what the user told us to do; if so, do it.
