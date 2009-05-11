@@ -1136,6 +1136,10 @@ class Event:
         """Get the event source."""
         return self._source
 
+    def sourceuser(self):
+        """Get the user who performed the current action"""
+        return nm_to_n(self.source())
+
     def target(self):
         """Get the event target."""
         return self._target

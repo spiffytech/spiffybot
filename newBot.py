@@ -105,7 +105,7 @@ def recordEvent(event):
     '''Log all connection events to the database. No real reason, just for kicks and giggles.'''
     global dbConn
     global cursor
-    user = event.source().split('!')[0]
+    user = event.sourceuser()
     alteredTime = str(time.time())
     channel = event.target()
     type = event.eventtype()
@@ -119,7 +119,7 @@ def handleTopic(connection, event):
     # TODO: Log topic when first entering a channel
     global dbConn
     global cursor
-    alterer = event.source().split('!')[0]  # Who changed the topic
+    alterer = event.sourceuser()  # Who changed the topic
     topic = event.arguments()[0]  # New topic
     alteredTime = str(time.time())
     cursor.execute("insert into topic_history values (?, ?, ?, ?)", (topic, alteredTime, alterer, event.target()))
@@ -133,7 +133,7 @@ def handleMessage(connection, event):
     tell.deliverMessages(connection, event)
 
     # Parse the raw IRC data contents
-    sender = event.source().split("!")[0]  # Who sent the message
+    sender = event.sourceuser()  # Who sent the message
     message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
 
     # First, record the message in our logs

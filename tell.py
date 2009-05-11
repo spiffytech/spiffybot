@@ -46,7 +46,7 @@ def deliverMessages(connection=None, event=None, args=None):
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=?", (sender,)).fetchall()
         cursor.execute("delete from tell where sendee=?", (sender,))
     else:
-        currentTime = time.time()  # Save time to account for seconds changeover between next two lines
+        currentTime = time.time()  # Save time to account for seconds change between next two lines
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where deliver<=?", (currentTime,)).fetchall()
         cursor.execute("delete from tell where deliver<=?", (currentTime,))
 
