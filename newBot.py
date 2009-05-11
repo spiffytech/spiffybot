@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Brian Cottingham
 # spiffyech@gmail.com
-# 2009-05-01
+# 2009-05-11
 # A fairly simple, yet capable, IRC bot
 
 import os
@@ -130,7 +130,7 @@ def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
 
     # First, see if this triggers a message delivery for someone
-    tell.checkTells(connection, event)
+    tell.deliverMessages(connection, event)
 
     # Parse the raw IRC data contents
     sender = event.source().split("!")[0]  # Who sent the message
@@ -214,7 +214,7 @@ def termInput(conn):
 
 def watchLoop(conn):
     while 1:
-        tell.checkTells(conn)
+        tell.deliverMessages(conn)
         time.sleep(5)
 
 

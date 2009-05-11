@@ -38,23 +38,23 @@ def tell(connection, event, args):
 
 
 
-def checkTells(connection=None, event=None, args=None): 
+def deliverMessages(connection=None, event=None, args=None): 
     '''Checks to see if there's a message to deliver'''
 
     if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
         sender = event.source().split("!")[0]
-        messages = cursor.execute("select * from tell where sendee=?", (sender,)).fetchall()
+        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=?", (sender,)).fetchall()
         cursor.execute("delete from tell where sendee=?", (sender,))
     else:
         currentTime = time.time()  # Save time to account for seconds changeover between next two lines
-        messages = cursor.execute("select * from tell where deliver<=?", (currentTime,)).fetchall()
+        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where deliver<=?", (currentTime,)).fetchall()
         cursor.execute("delete from tell where deliver<=?", (currentTime,))
 
     for message in messages:
         sender = message[0]
         sendee = message[1]
         messageText = message[2]
-        channel = message[5]
+        channel = message[3]
         deliveryTime = epochTools.fromEpoch(message[4])
         connection.privmsg(channel, "%s, message from %s at %s: %s" % (sendee, sender, deliveryTime, messageText))
     dbConn.commit()
