@@ -6,6 +6,7 @@
 import calc
 import ircTools
 import mcode
+import tell
 import misc
 import pranks
 import tiny
@@ -19,6 +20,7 @@ cmds = {
     "fact": misc.trivia,
     "kill": pranks.kill,
     "roulette": pranks.roulette,
+    "tell": tell.tell,
     "tiny": tiny.tiny_url,
     "topics": ircTools.topics,
     "weather": weather.getWeather,

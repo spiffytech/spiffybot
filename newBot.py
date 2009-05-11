@@ -28,14 +28,14 @@ cursor = dbConn.cursor()
 network = 'irc.freenode.net'
 port = 6667
 channels = ['#bottest',]
-nick = 'testbot'
-realName = 'spiffyb1t'
+nick = 'spiffybot'
+realName = 'spiffybot'
 
 
 def main():
     # Create an IRC object
     irc = irclib.IRC()
-    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
+#    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
     # Create a server object, connect and join the channels
     global server

@@ -5,6 +5,7 @@
 
 import time
 
+# Constant number of seconds. Should replace with datetime module.
 MINUTE = 60
 HOUR = 3600
 DAY = 216000
