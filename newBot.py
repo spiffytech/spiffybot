@@ -59,7 +59,10 @@ def main():
     # Fork off our child process for operator input
     pid = os.fork()
     if pid:
-        child_process(server)
+        termInput(server)
+    pid = os.fork()
+    if pid:
+        watchLoop(server)
 
     # In the parent process, start monitoring the channel
     irc.process_forever()
@@ -183,8 +186,16 @@ def updateCommands():
 
 
 
-def child_process(conn):
-    '''Child process main function- reads input from the user and sends it to the channels'''
+def joinChannels(connection=None, event=None):
+    # Join all specified channels at program launch
+    # In Separate function to facilitate joins after nick collision
+    for channel in channels:
+        server.join(channel)
+
+
+
+def termInput(conn):
+    '''Child process that reads input from the user and sends it to the channels'''
     if not "channel" in locals():
         channel = channels[0]
     while 1:
@@ -200,11 +211,11 @@ def child_process(conn):
 
 
 
-def joinChannels(connection=None, event=None):
-    # Join all specified channels at program launch
-    # In Separate function to facilitate joins after nick collision
-    for channel in channels:
-        server.join(channel)
+
+def watchLoop(conn):
+    while 1:
+        tell.checkTells(conn)
+        time.sleep(5)
 
 
 
