@@ -11,7 +11,7 @@ def createDB(dbName):
     "event" TEXT,
     "channel" TEXT,
     "time" TEXT
-)''')
+    )''')
 
     # This table is for regular messages
     cursor.execute('''CREATE TABLE "messages" (
@@ -19,20 +19,31 @@ def createDB(dbName):
     "channel" TEXT,
     "message" TEXT,
     "time" TEXT
-)''')
+    )''')
 
     # This table is for logging topics for each channel
     cursor.execute('''CREATE TABLE topic_history (
     "topic" TEXT,
     "time" TEXT,
     "user" TEXT
-, "channel" TEXT)''')
+    , "channel" TEXT)''')
 
     # This table is for storing random facts for the trivial function
     cursor.execute('''CREATE TABLE "trivia" (
     "submitter" TEXT,
     "text" TEXT
-)''')
+    )''')
+
+    # This table stores temporally asynchronous messages between users
+    cursor.execute('''CREATE TABLE tell (
+        "sender" TEXT,
+        "sendee" TEXT,
+        "message" TEXT,
+        "deliver" TEXT,
+        "sent" TEXT
+    , "channel" TEXT
+    )''')
+
 
     dbConn.commit()
     dbConn.close()
