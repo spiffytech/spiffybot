@@ -14,6 +14,7 @@ import time
 import irclib
 import commands
 from createDB import createDB
+import tell
 
 
 # Open the database
@@ -124,6 +125,9 @@ def handleTopic(connection, event):
 
 def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
+
+    # First, see if this triggers a message delivery for someone
+    tell.checkTells(connection, event)
 
     # Parse the raw IRC data contents
     sender = event.source().split("!")[0]  # Who sent the message

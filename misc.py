@@ -15,5 +15,5 @@ def trivia(connection, event, args):
 def addTrivia(connection, event, args):
     '''Add a trivia fact to the database'''
     sender = event.source().split("!")[0]
-    cursor.execute("insert into trivia values (?, ?)", sender, args)
+    cursor.execute("insert into trivia values (?, ?)", (sender, args))
     dbConn.commit()
