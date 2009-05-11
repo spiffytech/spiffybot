@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # Brian Cottingham
 # spiffyech@gmail.com
-# 2009-04-09
+# 2009-05-01
 # A fairly simple, yet capable, IRC bot
 
 import os
+import random
 import readline
 from sqlite3 import dbapi2 as sqlite
+import string
 import time
 
 import irclib
@@ -27,20 +29,22 @@ network = 'irc.freenode.net'
 port = 6667
 channels = ['#bottest',]
 nick = 'testbot'
-realName = 'spiffybot'
+realName = 'spiffyb1t'
 
 
 def main():
     # Create an IRC object
     irc = irclib.IRC()
-#    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
+    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
     # Create a server object, connect and join the channels
+    global server
     server = irc.server()
     server.connect(network, port, nick, ircname = realName)
     for channel in channels:
         server.join(channel)
     server.privmsg(channel, "Feed me.")  # Send message to channel when we join it
+
 
     # Add handler functions for various IRC events
     irc.add_global_handler("pubmsg", handleMessage)
@@ -50,6 +54,7 @@ def main():
     irc.add_global_handler("quit", handleQuit)
     irc.add_global_handler("kick", handleKick)
     irc.add_global_handler("topic", handleTopic)
+    irc.add_global_handler("nicknameinuse", changeNick)
 
 
     # Fork off our child process for operator input
@@ -59,6 +64,23 @@ def main():
 
     # In the parent process, start monitoring the channel
     irc.process_forever()
+
+
+def changeNick(connection=None, event=None, newNick=None):
+    if connection == None and event == None:  # Called within newBot.py, not from an event handler
+        connection.nick(newNick)
+        nick = newNick
+
+    else:
+        newNick = ""
+        if len(connection.nickname) < 15:
+            connection.nick(connection.nickname +  "_")
+        else:
+            chars = string.letters + string.numbers
+            random.seed(time.time)
+            for i in range(0, random.randint(2, len(string.digits)-1)):
+                newNick += chars[random.randint(0, len("".letters)-1)]
+            connection.nick(newNick)
 
 
 ########## Functions to handle channel user connection events ##########

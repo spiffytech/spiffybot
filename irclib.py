@@ -720,6 +720,7 @@ class ServerConnection(Connection):
 
     def nick(self, newnick):
         """Send a NICK command."""
+        self.nickname = newnick
         self.send_raw("NICK " + newnick)
 
     def notice(self, target, text):
