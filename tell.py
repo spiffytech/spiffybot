@@ -5,13 +5,12 @@ import parsedatetime.parsedatetime as pdt
 import parsedatetime.parsedatetime_consts as pdc
 import time
 
-dbConn = sqlite.connect("logs.db")
-cursor = dbConn.cursor()
 
+dbName = "logs.db"
 
 def tell(connection, event, args):
     '''Saves a message to deliver to someone later'''
-    dbConn = sqlite.connect("logs.db")
+    dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
     sender = event.source().split("!")[0]
@@ -40,6 +39,8 @@ def tell(connection, event, args):
 
 def deliverMessages(connection=None, event=None, args=None): 
     '''Checks to see if there's a message to deliver'''
+    dbConn = sqlite.connect(dbName)
+    cursor = dbConn.cursor()
 
     if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
         sender = event.source().split("!")[0]
