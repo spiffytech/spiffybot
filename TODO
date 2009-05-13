@@ -1,4 +1,5 @@
-Programatically update database tables/fields on program launch
+Update database tables/fields to newest spec on program launch
 Allow tell times to be at the front of the message
 Mafiabot!
 Try to reclaim nick
+Reorganize python modules into a cleaner directory structure (i.e., not all in one directory)

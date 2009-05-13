@@ -2,11 +2,13 @@ from sqlite3 import dbapi2 as sqlite
 from epochTools import *
 import re
 
-dbConn = sqlite.connect("logs.db")
-cursor = dbConn.cursor()
+dbName = "logs.db"
 
 def topics(connection, event, args):
     '''Lists the previous $args topics set in a channel'''
+    dbConn = sqlite.connect(dbName)
+    cursor = dbConn.cursor()
+
     if not re.match("\d", args):  # Oh, goodie- input validation
         args = 3
 
