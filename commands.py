@@ -4,6 +4,7 @@
 
 
 import calc
+import help
 import ircTools
 import mcode
 import tell
@@ -18,6 +19,7 @@ cmds = {
     "encode": mcode.encode,
     "decode": mcode.decode,
     "fact": misc.trivia,
+    "help": help.help,
     "kill": pranks.kill,
     "roulette": pranks.roulette,
     "tell": tell.tell,
