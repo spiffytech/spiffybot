@@ -14,7 +14,7 @@ def tell(connection, event, args):
     cursor = dbConn.cursor()
 
     sender = event.source().split("!")[0]
-    sendee = args.split()[0]
+    sendee = args.split()[0].lower()  # To whom should the message be delivered
     channel = event.target()
     message = " ".join(args.split()[1:])
     if len(message.split(" in ")) > 1:
@@ -43,7 +43,7 @@ def deliverMessages(connection=None, event=None, args=None):
     cursor = dbConn.cursor()
 
     if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
-        sender = event.source().split("!")[0]
+        sender = event.source().split("!")[0].lower()
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=?", (sender,)).fetchall()
         cursor.execute("delete from tell where sendee=?", (sender,))
     else:

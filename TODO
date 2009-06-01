@@ -4,3 +4,5 @@ Mafiabot!
 Try to reclaim nick
 Reorganize python modules into a cleaner directory structure (i.e., not all in one directory)
 Make Roulette work on a per-channel basis
+Make tell respond to 'ask'
+Fix capitalization of nicks in tell
