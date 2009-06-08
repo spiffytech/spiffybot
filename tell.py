@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# Brian Cottingham
+# spiffytech@gmail.com
+# 2009-05-07
+# Delivers messages to users either at a specified time, or when they next join/talk
+
+
 from sqlite3 import dbapi2 as sqlite
 
 import epochTools

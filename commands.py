@@ -9,7 +9,7 @@ import ircTools
 import mcode
 import tell
 import misc
-import pranks
+import roulette
 import tiny
 import weather
 import wootoff
@@ -21,8 +21,7 @@ cmds = {
     "decode": mcode.decode,
     "fact": misc.trivia,
     "help": help.help,
-    "kill": pranks.kill,
-    "roulette": pranks.roulette,
+    "roulette": roulette.roulette,
     "tell": tell.tell,
     "tiny": tiny.tiny_url,
     "topics": ircTools.topics,
