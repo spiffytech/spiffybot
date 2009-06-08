@@ -15,6 +15,9 @@ def tell(connection, event, args):
 
     sender = event.source().split("!")[0]
     sendee = args.split()[0].lower()  # To whom should the message be delivered
+    if sendee == "me" or sendee == "myself":
+        sendee = sender
+    print sendee
     channel = event.target()
     message = " ".join(args.split()[1:])
     if len(message.split(" in ")) > 1:
