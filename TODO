@@ -8,5 +8,4 @@ Make tell respond to 'ask'
 Fix capitalization of nicks in tell
 Track channels the bot is in and rejoin them on starup
 Make commands in the bot case-insensitive
-Make tell translate 'tell me' into 'tell <mynick>'
 Implement reboot
