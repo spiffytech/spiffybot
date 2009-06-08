@@ -15,6 +15,7 @@ import weather
 import wootoff
 
 cmds = {
+    "ask": tell.tell,
     "calc": calc.calc,
     "encode": mcode.encode,
     "decode": mcode.decode,
