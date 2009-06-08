@@ -6,6 +6,8 @@
 import time
 import random
 
+channels = {}
+
 def kill(connection, event, target):
     '''Shouts "die" at someone. Formerly attempted to boot someone with an excess flood'''
     channel = event.target()
@@ -16,51 +18,59 @@ def kill(connection, event, target):
 
 
 
-#Roulette variables
-random.seed(time.time())
-currentBarrel = 7
-bulletLoc = random.randint(1, 6)
-emptyPhrases = (
-    "No bullet here",
-    "Empty chamber",
-    "You didn't really think that was going to work, did you?",
-    "Miss!",
-    "Try again!",
-    "You fail at guns",
-    "n chamber(s) down, (6-n) to go!",
-    "Come on, pull that trigger like you mean it!",
-    "Maybe another spin would help",
-)
-reloadPhrases = (
-    "Who's feelin' lucky?",
-    "Hear we go again.",
-    "Round and round we go, where it stops, only I know.",
-    "Too bad. Maybe this time will turn out better."
-)
-
 def roulette(connection, event, args):
     '''Plays Russian Roulette. When finished, will try to kick a nick from the channel when hit.'''
-    #TODO: track bullet/chamber on a per-channel basis
-    global currentBarrel
-    global bulletLoc
-
+    if not event.target() in channels:
+        channels[event.target()] = channel()
+    c = channels[event.target()]
     if args == "spin":
-        currentBarrel = 7
-        bulletLoc = random.randint(1, 6)
+        c.spin(connection, event)
+    else:
+        c.shoot(connection, event)
+
+
+
+class channel():
+    def __init__(self):
+        #Roulette variables
+        random.seed(time.time())
+        self.currentBarrel = 7
+        self.bulletLoc = random.randint(1, 6)
+        self.emptyPhrases = (
+            "No bullet here",
+            "Empty chamber",
+            "You didn't really think that was going to work, did you?",
+            "Miss!",
+            "Try again!",
+            "You fail at guns",
+            "n chamber(s) down, (6-n) to go!",
+            "Come on, pull that trigger like you mean it!",
+            "Maybe another spin would help",
+        )
+        self.reloadPhrases = (
+            "Who's feelin' lucky?",
+            "Hear we go again.",
+            "Round and round we go, where it stops, only I know.",
+            "Too bad. Maybe this time will turn out better."
+        )
+
+    def spin(self, connection, event):
+        self.currentBarrel = 7
+        self.bulletLoc = random.randint(1, 6)
         connection.privmsg(event.target(), "*spin*")
         connection.privmsg(event.target(), "Don't like counting chambers, eh?")
-        return
 
-    currentBarrel -= 1
-    if currentBarrel == bulletLoc:
-        connection.privmsg(event.target(), "Bang! %s is dead!" % event.source().split("!")[0])
-        currentBarrel = 0
-    else:
-        connection.privmsg(event.target(), "*click*")
-        connection.privmsg(event.target(), random.choice(emptyPhrases))
+    def shoot(self, connection, event):
+        self.currentBarrel -= 1
+        if self.currentBarrel == self.bulletLoc:
+            connection.privmsg(event.target(), "Bang! %s is dead!" % event.source().split("!")[0])
+            self.currentBarrel = 0
+        else:
+            connection.privmsg(event.target(), "*click*")
+            connection.privmsg(event.target(), random.choice(self.emptyPhrases))
 
-    if currentBarrel == 0:
-        currentBarrel = 7
-        bulletLoc = random.randint(1, 6)
-        connection.privmsg(event.target(), "RELOAD! *click* *spin*")
-        connection.privmsg(event.target(), random.choice(reloadPhrases))
+        if self.currentBarrel == 0:
+            self.currentBarrel = 7
+            self.bulletLoc = random.randint(1, 6)
+            connection.privmsg(event.target(), "RELOAD! *click* *spin*")
+            connection.privmsg(event.target(), random.choice(self.reloadPhrases))

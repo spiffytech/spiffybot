@@ -3,8 +3,6 @@ Allow tell times to be at the front of the message
 Mafiabot!
 Try to reclaim nick
 Reorganize python modules into a cleaner directory structure (i.e., not all in one directory)
-Make Roulette work on a per-channel basis
-Fix capitalization of nicks in tell
 Track channels the bot is in and rejoin them on starup
-Make commands in the bot case-insensitive
+    with debug option for testing without join/part spamming channels
 Implement reboot
