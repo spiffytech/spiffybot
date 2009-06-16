@@ -29,7 +29,7 @@ cursor = dbConn.cursor()
 # IRC connection information
 network = 'irc.freenode.net'
 port = 6667
-channels = ['#bottest',]
+channels = ['##bottest',]
 nick = 'spiffybot'
 realName = 'spiffybot'
 

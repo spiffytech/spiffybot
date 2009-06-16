@@ -788,7 +788,7 @@ class ServerConnection(Connection):
             if self.ssl:
                 self.ssl.write(string + "\r\n")
             else:
-                self.socket.send(string + "\r\n")
+                self.socket.send(string.encode("utf-8") + "\r\n")
             if DEBUG:
                 print "TO SERVER:", string
         except socket.error, x:
