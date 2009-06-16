@@ -9,13 +9,27 @@ import random
 import readline
 from sqlite3 import dbapi2 as sqlite
 import string
+import sys
 import time
+import traceback
 
 import irclib
 import commands
 from createDB import createDB
 import tell
 
+
+def printException(maxTBlevel=5):
+    cla, exc, trbk = sys.exc_info()
+    excName = cla.__name__
+    try:
+        excArgs = exc.__dict__["args"]
+    except KeyError:
+        excArgs = "<no args>"
+    excTb = traceback.format_tb(trbk, maxTBlevel)
+    print excName
+    print excArgs
+    print "\n".join(excTb)
 
 # Open the database
 dbName = "logs.db"
@@ -66,7 +80,13 @@ def main():
         watchLoop(server)
 
     # In the parent process, start monitoring the channel
-    irc.process_forever()
+    while 1:
+        print "running..."
+        try:
+            irc.process_forever()
+        except:
+            printException()
+            server.privmsg("spiffytech", "spiffytech, I crashed")
 
 
 def changeNick(connection=None, event=None, newNick=None):
