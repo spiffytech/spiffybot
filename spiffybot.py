@@ -52,7 +52,7 @@ realName = 'spiffybot'
 def main():
     # Create an IRC object
     irc = irclib.IRC()
-    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
+#    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
     # Create a server object, connect and join the channels
     global server
@@ -81,7 +81,13 @@ def main():
         watchLoop(server)
 
     # In the parent process, start monitoring the channel
-    irc.process_forever()
+    while 1:
+        try:
+            irc.process_forever()
+        except KeyboardError:
+            break
+        except:
+            server.privmsg("spiffytech", "I crashed!")
 
 
 def changeNick(connection=None, event=None, newNick=None):
