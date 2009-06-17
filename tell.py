@@ -24,7 +24,6 @@ def tell(connection, event, args):
     sendee = args.split()[0].lower()  # To whom should the message be delivered
     if sendee == "me" or sendee == "myself":
         sendee = sender
-    print sendee
     channel = event.target()
     message = " ".join(args.split()[1:])
     if len(message.split(" in ")) > 1:
@@ -41,7 +40,7 @@ def tell(connection, event, args):
         deliver = "%d-%d-%d %d:%d:%d" % (deliver[0], deliver[1], deliver[2], deliver[3], deliver[4], deliver[5])  # Format the deliver into a string for toEpoch()
         deliver = epochTools.toEpoch(deliver, format="%Y-%m-%d %H:%M:%S")  # deliverstamp for DB storage
 
-    cursor.execute("insert into tell (sender, sendee, channel, message, deliver, sent) values (?, ?, ?, ?, ?, ?)", (sender, sendee, channel, message, deliver, time.time()))
+    cursor.execute("insert into tell (sender, sendee, channel, message, deliver, sent) values (?, ?, ?, ?, ?, ?)", (sender, sendee, channel, unicode(message, "utf-8"), deliver, time.time()))
     connection.privmsg(event.target(), "Will do!")
     dbConn.commit()
 

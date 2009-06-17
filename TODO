@@ -6,3 +6,5 @@ Reorganize python modules into a cleaner directory structure (i.e., not all in o
 Track channels the bot is in and rejoin them on starup
     Include a debug option for testing without join/part spamming channels
 Implement reboot
+Detect nick without detecting similar nicks
+    "spiffy" does not catch "spiffytech"

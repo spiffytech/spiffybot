@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Brian Cottingham
 # spiffyech@gmail.com
 # 2009-05-12
@@ -80,13 +81,7 @@ def main():
         watchLoop(server)
 
     # In the parent process, start monitoring the channel
-    while 1:
-        print "running..."
-        try:
-            irc.process_forever()
-        except:
-            printException()
-            server.privmsg("spiffytech", "spiffytech, I crashed")
+    irc.process_forever()
 
 
 def changeNick(connection=None, event=None, newNick=None):
@@ -160,7 +155,7 @@ def handleMessage(connection, event):
     # First, record the message in our logs
     global dbConn
     global cursor
-    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), " ".join(message), str(time.time())))
+    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), unicode(" ".join(message), "utf-8"), unicode(time.time())))
     dbConn.commit()
 
     # Next, see if the message is something we care about (i.e., a command)
