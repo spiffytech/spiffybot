@@ -52,7 +52,7 @@ realName = 'spiffybot'
 def main():
     # Create an IRC object
     irc = irclib.IRC()
-#    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
+    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
     # Create a server object, connect and join the channels
     global server
@@ -123,7 +123,7 @@ def recordEvent(event):
     global cursor
     user = event.sourceuser().decode("utf-8")
     alteredTime = str(time.time())
-    channel = event.target().decode("utf-8")
+    channel = event.target()
     type = event.eventtype()
     cursor.execute("insert into connevents values (?, ?, ?, ?)", (user, type, channel, alteredTime))
     dbConn.commit()
