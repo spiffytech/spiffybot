@@ -8,3 +8,5 @@ Track channels the bot is in and rejoin them on starup
 Implement reboot
 Detect nick without detecting similar nicks
     "spiffy" does not catch "spiffytech"
+tell responds to 'remind'
+Make changenick() check for errors after trying to change the nick

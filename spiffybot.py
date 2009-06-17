@@ -121,9 +121,9 @@ def recordEvent(event):
     '''Log all connection events to the database. No real reason, just for kicks and giggles.'''
     global dbConn
     global cursor
-    user = event.sourceuser()
+    user = event.sourceuser().decode("utf-8")
     alteredTime = str(time.time())
-    channel = event.target()
+    channel = event.target().decode("utf-8")
     type = event.eventtype()
     cursor.execute("insert into connevents values (?, ?, ?, ?)", (user, type, channel, alteredTime))
     dbConn.commit()
@@ -135,8 +135,8 @@ def handleTopic(connection, event):
     # TODO: Log topic when first entering a channel
     global dbConn
     global cursor
-    alterer = event.sourceuser()  # Who changed the topic
-    topic = event.arguments()[0]  # New topic
+    alterer = event.sourceuser().decode("utf-8")  # Who changed the topic
+    topic = event.arguments()[0].decode("utf-8")  # New topic
     alteredTime = str(time.time())
     cursor.execute("insert into topic_history values (?, ?, ?, ?)", (topic, alteredTime, alterer, event.target()))
     dbConn.commit()
@@ -149,13 +149,14 @@ def handleMessage(connection, event):
     tell.deliverMessages(connection, event)
 
     # Parse the raw IRC data contents
-    sender = event.sourceuser()  # Who sent the message
-    message = event.arguments()[0].split()  # Get the channel's new message and split it for parsing
+    sender = event.sourceuser().decode("utf-8")  # Who sent the message
+    message = event.arguments()[0].decode("utf-8")  # Get the channel's new message and split it for parsing
+    message = message.split()
 
     # First, record the message in our logs
     global dbConn
     global cursor
-    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), unicode(" ".join(message), "utf-8"), unicode(time.time())))
+    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), " ".join(message), unicode(time.time())))
     dbConn.commit()
 
     # Next, see if the message is something we care about (i.e., a command)
