@@ -11,3 +11,5 @@ Detect nick without detecting similar nicks
 Make changenick() check for errors after trying to change the nick
 See if I can make irclib.py handle all of the unicode stuff for me
 Fix private messages
+Make weather take zip codes
+Echo
