@@ -10,3 +10,4 @@ Detect nick without detecting similar nicks
     "spiffy" does not catch "spiffytech"
 Make changenick() check for errors after trying to change the nick
 See if I can make irclib.py handle all of the unicode stuff for me
+Fix private messages

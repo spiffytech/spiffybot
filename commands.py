@@ -10,6 +10,7 @@ import mcode
 import tell
 import misc
 import roulette
+import stocks
 import tiny
 import weather
 import wootoff
@@ -21,7 +22,8 @@ cmds = {
     "decode": mcode.decode,
     "fact": misc.trivia,
     "help": help.help,
-    "remind", tell.tell
+    "quote": stocks.quote,
+    "remind", tell.tell,
     "roulette": roulette.roulette,
     "tell": tell.tell,
     "tiny": tiny.tiny_url,
