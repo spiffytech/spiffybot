@@ -23,12 +23,12 @@ def getWeather(irc, event, place):
     # TODO: Find a way to let the user input a zip code instead of city/state
     channel = event.target()
 
-    if not re.match("[0-9]{5}", place):
+    if not re.match("[0-9]{5}", place):  # User gave us a zip code
         city = place.partition(", ")[0].replace(" ", "%20")
         state = place.partition(", ")[2]
 
         content = urllib.urlopen("http://www.rssweather.com/wx/us/" + state + "/" + city + "/rss.php")  # Grab the rssweather.com page for this location
-    else:
+    else:  # User gave us a city & state
         content = urllib.urlopen("http://www.rssweather.com/zipcode/" + place + "/rss.php")
 
     xmldoc = minidom.parse(content)
