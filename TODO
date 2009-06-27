@@ -13,3 +13,6 @@ See if I can make irclib.py handle all of the unicode stuff for me
 Fix private messages
 Make weather take zip codes
 Echo
+Implement admin user
+Developer documentation
+Excuse generator

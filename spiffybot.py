@@ -14,10 +14,17 @@ import sys
 import time
 import traceback
 
-import irclib
 import commands
 from createDB import createDB
+import irclib
+import ircTools
 import tell
+
+
+if len(sys.argv) > 1 and sys.argv[1] == "--debug":
+    DEBUG = True
+else:
+    DEBUG = False
 
 
 def printException(maxTBlevel=5):
@@ -52,7 +59,8 @@ realName = 'spiffybot'
 def main():
     # Create an IRC object
     irc = irclib.IRC()
-#    irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
+    if DEBUG:
+        irclib.DEBUG = True  # Uncomment this to dump all irclib events to stdout
 
     # Create a server object, connect and join the channels
     global server
@@ -82,12 +90,16 @@ def main():
 
     # In the parent process, start monitoring the channel
     while 1:
-        try:
+        if not DEBUG:
+            try:
+                irc.process_forever()
+            except KeyboardInterrupt:
+                break
+            except:
+                server.privmsg("spiffytech", "I crashed!")
+        else:
+            print "here"
             irc.process_forever()
-        except KeyboardError:
-            break
-        except:
-            server.privmsg("spiffytech", "I crashed!")
 
 
 def changeNick(connection=None, event=None, newNick=None):
@@ -151,19 +163,21 @@ def handleTopic(connection, event):
 def handleMessage(connection, event):
     '''Someone sent a message to a channel!'''
 
-    # First, see if this triggers a message delivery for someone
-    tell.deliverMessages(connection, event)
-
     # Parse the raw IRC data contents
     sender = event.sourceuser().decode("utf-8")  # Who sent the message
     message = event.arguments()[0].decode("utf-8")  # Get the channel's new message and split it for parsing
     message = message.split()
 
-    # First, record the message in our logs
+    # BEFORE ANYTHING ELSE, record the message in our logs
     global dbConn
     global cursor
     cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), " ".join(message), unicode(time.time())))
     dbConn.commit()
+
+    # First, see if this triggers a message delivery for someone
+    tell.deliverMessages(connection, event)
+    # Next, check for echoes
+    ircTools.echo(connection, event)
 
     # Next, see if the message is something we care about (i.e., a command)
     if (message[0][0:len(nick)].lower() == nick.lower() or not event.target().startswith("#")) and len(message) > 1:  # If it's a command for us:

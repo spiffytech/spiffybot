@@ -37,3 +37,14 @@ def topics(connection, event, args):
         for topic in topics: 
             alteredTime = fromEpoch(topic[1], secs=1)  # Altered time is stored in the DB in epoch format. Convert out of that.
             connection.privmsg(event.target(), "On %s by %s: %s" % (alteredTime, topic[2], topic[0]))  #Send to the channel
+
+
+def echo(connection, event, args=None):
+    '''If two people say the same thing immediately after each other, echo them'''
+    dbConn = sqlite.connect(dbName)
+    cursor = dbConn.cursor()
+
+    lastMessages = cursor.execute("select * from messages where channel=? order by time desc limit 3", (event.target(),)).fetchall()
+    if lastMessages[0][2] == lastMessages[1][2] and lastMessages[0][2] != lastMessages[2][2]:
+        if lastMessages[0][0] != lastMessages[1][0]:
+            connection.privmsg(event.target(), lastMessages[0][2])

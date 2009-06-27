@@ -37,7 +37,7 @@ cmds = {
     "fact": misc.trivia,
     "help": help.help,
     "quote": stocks.quote,
-    "remind", tell.tell,
+    "remind": tell.tell,
     "roulette": roulette.roulette,
     "tell": tell.tell,
     "tiny": tiny.tiny_url,
