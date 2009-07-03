@@ -180,10 +180,13 @@ def handleMessage(connection, event):
     ircTools.echo(connection, event)
 
     # Next, see if the message is something we care about (i.e., a command)
-    if (message[0][0:len(nick)].lower() == nick.lower() or not event.target().startswith("#")) and len(message) > 1:  # If it's a command for us:
+    if (message[0][0:len(nick)].lower() == nick.lower() and len(message) > 1) or event.eventtype() == "privmsg":  # If it's a command for us:
+        print "here"
+        print "\n\n" + event.source()
         # ^^ startswith: "spiffybot: calc" ; not startswith("#") indicates private message ; len prevents triggers on "spiffybot!"
+
         # Trim botnick off of front of public messages to make them match private messages, for list index's sake
-        if not message[0][0:len(nick)].lower() == nick.lower():  # No bot nick at start of message indicates a command passed in a private message
+        if event.eventtype() == "privmsg":  # No bot nick at start of message indicates a command passed in a private message
             command = message[0].lower()
             args = " ".join(message[1:])
         else:

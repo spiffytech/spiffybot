@@ -26,6 +26,7 @@ def trivia(connection, event, args):
 
     sender = event.source().split("!")[0]
     fact = cursor.execute("SELECT * FROM trivia ORDER BY RANDOM() LIMIT 1").fetchone()[0]
+    print "Replying in channel" + event.target()
     connection.privmsg(event.target(), sender+" : "+fact)
 
 def addTrivia(connection, event, args):
