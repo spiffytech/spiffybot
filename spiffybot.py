@@ -18,6 +18,7 @@ import commands
 from createDB import createDB
 import irclib
 import ircTools
+import misc
 import tell
 
 
@@ -98,8 +99,8 @@ def main():
             except:
                 server.privmsg("spiffytech", "I crashed!")
         else:
-            print "here"
             irc.process_forever()
+            print "here"
 
 
 def changeNick(connection=None, event=None, newNick=None):
@@ -181,8 +182,6 @@ def handleMessage(connection, event):
 
     # Next, see if the message is something we care about (i.e., a command)
     if (message[0][0:len(nick)].lower() == nick.lower() and len(message) > 1) or event.eventtype() == "privmsg":  # If it's a command for us:
-        print "here"
-        print "\n\n" + event.source()
         # ^^ startswith: "spiffybot: calc" ; not startswith("#") indicates private message ; len prevents triggers on "spiffybot!"
 
         # Trim botnick off of front of public messages to make them match private messages, for list index's sake
@@ -209,6 +208,9 @@ def handleMessage(connection, event):
             return
         elif (command == "get" and args.split()[0] == "out") or (command == "fail"):
             connection.part(event.target())
+            return
+        elif command == "three" and args.split()[0] == "cheers":
+            misc.threeCheers(connection, event, " ".join(args.split()[1:]))
             return
 
         try:  # See if we have a command in our list to match what the user told us to do; if so, do it.

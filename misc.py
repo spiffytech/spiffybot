@@ -15,7 +15,9 @@
 #You should have received a copy of the GNU General Public License
 #along with Spiffybot.  If not, see <http://www.gnu.org/licenses/>.
 
+import random
 from sqlite3 import dbapi2 as sqlite
+import time
 
 dbName = "logs.db"
 
@@ -37,3 +39,13 @@ def addTrivia(connection, event, args):
     sender = event.source().split("!")[0]
     cursor.execute("insert into trivia values (?, ?)", (sender, args))
     dbConn.commit()
+
+
+def threeCheers(connection, event, args):
+    random.seed(time.time())
+    cheers = ["hurrah", "hooray", "huzzah",]
+    cheer = random.choice(cheers)
+    
+    for i in range(3):
+        connection.privmsg(event.target(), cheer + " for " + args)
+        time.sleep(1.1)
