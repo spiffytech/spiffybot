@@ -45,6 +45,7 @@ def echo(connection, event, args=None):
     cursor = dbConn.cursor()
 
     lastMessages = cursor.execute("select * from messages where channel=? order by time desc limit 3", (event.target(),)).fetchall()
-    if lastMessages[0][2] == lastMessages[1][2] and lastMessages[0][2] != lastMessages[2][2]:
-        if lastMessages[0][0] != lastMessages[1][0]:
-            connection.privmsg(event.target(), lastMessages[0][2])
+    if lastMessages[0][2] == lastMessages[1][2] and lastMessages[0][2] != lastMessages[2][2]: # echo once
+        if re.search("^[^!.]", lastMessages[0][2]): # don't echo common IRC commands starting with ! or .
+            if lastMessages[0][0] != lastMessages[1][0]: # different nicks
+                connection.privmsg(event.target(), lastMessages[0][2])
