@@ -24,17 +24,17 @@ import tell
 
 # ==========
 # Temporary imports until automatic plugin infrastructure is in place
-import calc
+from calc import calc
 import help
-import ircTools
-import mcode
-import tell
-import misc
-import roulette
-import stocks
-import tiny
-import weather
-import wootoff
+from ircTools import ircTools
+from mcode import mcode
+from tell import tell
+from misc import misc
+from roulette import roulette
+from stocks import stocks
+from tiny import tiny
+from weather import weather
+from woot import wootoff
 # =========
 
 

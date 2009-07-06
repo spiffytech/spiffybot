@@ -22,3 +22,4 @@ Startup questions when generating new database
     defaults file?
 Consider moving to a class-based module system
 Fix commandless messages ("spiffybot!")
+Fix special symbols in calc (sup, sub, carat, etc.)
