@@ -7,6 +7,7 @@
 
 import os
 import random
+import re
 import readline
 from sqlite3 import dbapi2 as sqlite
 import string
@@ -20,6 +21,22 @@ import irclib
 import ircTools
 import misc
 import tell
+
+# ==========
+# Temporary imports until automatic plugin infrastructure is in place
+import calc
+import help
+import ircTools
+import mcode
+import tell
+import misc
+import roulette
+import stocks
+import tiny
+import weather
+import wootoff
+# =========
+
 
 
 if len(sys.argv) > 1 and sys.argv[1] == "--debug":
@@ -137,7 +154,7 @@ def handleKick(connection, event):
     recordEvent(event)
 
 def recordEvent(event):
-    '''Log all connection events to the database. No real reason, just for kicks and giggles.'''
+    '''Log channel all connection events to the database. There's no real reason for it presently; just doing it for kicks and giggles.'''
     global dbConn
     global cursor
     user = event.sourceuser().decode("utf-8")
@@ -167,12 +184,11 @@ def handleMessage(connection, event):
     # Parse the raw IRC data contents
     sender = event.sourceuser().decode("utf-8")  # Who sent the message
     message = event.arguments()[0].decode("utf-8")  # Get the channel's new message and split it for parsing
-    message = message.split()
 
     # BEFORE ANYTHING ELSE, record the message in our logs
     global dbConn
     global cursor
-    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), " ".join(message), unicode(time.time())))
+    cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), message, unicode(time.time())))
     dbConn.commit()
 
     # First, see if this triggers a message delivery for someone
@@ -181,44 +197,34 @@ def handleMessage(connection, event):
     ircTools.echo(connection, event)
 
     # Next, see if the message is something we care about (i.e., a command)
-    if (message[0][0:len(nick)].lower() == nick.lower() and len(message) > 1) or event.eventtype() == "privmsg":  # If it's a command for us:
-        # ^^ startswith: "spiffybot: calc" ; not startswith("#") indicates private message ; len prevents triggers on "spiffybot!"
-
-        # Trim botnick off of front of public messages to make them match private messages, for list index's sake
-        if event.eventtype() == "privmsg":  # No bot nick at start of message indicates a command passed in a private message
-            command = message[0].lower()
-            args = " ".join(message[1:])
-        else:
-            command = message[1].lower()
-            args = " ".join(message[2:])  # Quite unexplainably, this will never throw an index-out-of-range error
+    if message[0:len(nick)].lower() == nick.lower() or event.eventtype() == "privmsg":  # If it's a command for us:
+        # ^^ startswith: "spiffybot: calc" || privmsg part ensures this code is triggered if the message is a PM
+        if not event.eventtype() == "privmsg":
+            message = message.partition(" ")[2]  # No nick at the front of a private message
 
         # Run the specified command
-        # Start with a few commands that are best (thanks to coding structure) parsed first
-        # TODO: Refactor bot to use internal[] and external[] dicts, rather than this if/elif stuff
-        if command == "update":
-            updateCommands()  # Update the command list
-            return
-        elif command == "join":
-            connection.join(args)
-            return
-        elif command == "nick":
+
+        for command in commands.cmds:
+            r = re.search(command[0], message)
+            if r != None:
+                args = message[r.end():].strip()  # For now, a command always starts the message. args is whatever comes after the command.
+                execString = command[1] + "(connection, event, args)"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
+                eval(execString)
+                return
+
+        reply = "Maybe."  # Respond with this if we don't have anything else to respond with
+        connection.privmsg(event.target(), reply)
+
+
+
+def cmdJoin(connection, event, args):
+    connection.join(args)
+def cmdNick(connection, event, args):
             connection.nick(args)
             global nick
             nick = args
-            return
-        elif (command == "get" and args.split()[0] == "out") or (command == "fail"):
-            connection.part(event.target())
-            return
-        elif command == "three" and args.split()[0] == "cheers":
-            misc.threeCheers(connection, event, " ".join(args.split()[1:]))
-            return
-
-        try:  # See if we have a command in our list to match what the user told us to do; if so, do it.
-            commands.cmds[command](connection, event, args)
-        except KeyError:  # OK, so we don't have a simple command. Look for a more advanced (e.g.,"natural language") command
-            reply = "Maybe."  # Respond with this if we don't have anything else to respond with
-            connection.privmsg(event.target(), reply)
-
+def cmdPart(connection, event, args):
+    connection.part(event.target())
 
 
 def updateCommands():

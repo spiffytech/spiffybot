@@ -20,3 +20,5 @@ Easy, simple plugin structure
     Multi-word regex command interpretation
 Startup questions when generating new database
     defaults file?
+Consider moving to a class-based module system
+Fix commandless messages ("spiffybot!")

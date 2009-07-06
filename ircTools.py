@@ -41,6 +41,10 @@ def topics(connection, event, args):
 
 def echo(connection, event, args=None):
     '''If two people say the same thing immediately after each other, echo them'''
+
+    if event.eventtype() == "privmsg":
+        return
+
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
