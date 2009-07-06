@@ -19,8 +19,8 @@ import commands
 from createDB import createDB
 import irclib
 import ircTools
-import misc
-import tell
+from misc import misc
+from tell import tell
 
 # ==========
 # Temporary imports until automatic plugin infrastructure is in place
