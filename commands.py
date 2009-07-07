@@ -36,4 +36,5 @@ cmds = [
     ("^weather", "weather.getWeather"),
     ("^woot", "wootoff.checkWoot"),
     ("^three cheers", "misc.threeCheers"),
+    ("^difficulty check", "misc.difficultyCheck"),
 ]

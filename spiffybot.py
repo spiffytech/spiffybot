@@ -115,6 +115,7 @@ def main():
                 break
             except:
                 server.privmsg("spiffytech", "I crashed!")
+                printException()
         else:
             irc.process_forever()
             print "here"

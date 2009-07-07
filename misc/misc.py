@@ -49,3 +49,27 @@ def threeCheers(connection, event, args):
     for i in range(3):
         connection.privmsg(event.target(), cheer + " for " + args)
         time.sleep(1.1)
+
+
+def difficultyCheck(connection, event, args):
+    diffs = {
+        "very easy": 0,
+        "easy": 5,
+        "average": 10,
+        "tough": 15,
+        "challenging": 20,
+        "formidable": 25,
+        "heroic": 30,
+        "nearly impossible": 40
+    }
+    if args == "":
+        limit = diffs["average"]
+    else:
+        limit = diffs[args]
+
+    random.seed(time.time())
+    roll = random.randint(1, 20)
+    if roll >= limit:
+        connection.privmsg(event.target(), "Victory! You roll a %d, while requiring  a %d" % (roll, limit))
+    else:
+        connection.privmsg(event.target(), "You fail at your challenge with a roll of %d!" % roll)

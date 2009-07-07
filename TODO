@@ -15,9 +15,9 @@ Implement admin user
 Developer documentation
 Excuse generator
 Easy, simple plugin structure
-    YAML spec files
-    Directory organization
+    Spec files
     Multi-word regex command interpretation
+        Be able to use regex for grabbing args
 Startup questions when generating new database
     defaults file?
 Consider moving to a class-based module system
