@@ -18,8 +18,9 @@ Easy, simple plugin structure
     Spec files
     Multi-word regex command interpretation
         Be able to use regex for grabbing args
-Startup questions when generating new database
+Ask questions at program start when generating new database
     defaults file?
 Consider moving to a class-based module system
 Fix commandless messages ("spiffybot!")
 Fix special symbols in calc (sup, sub, carat, etc.)
+replace os.fork() with multiprocessing module

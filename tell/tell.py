@@ -63,18 +63,26 @@ def tell(connection, event, args):
 
 def deliverMessages(connection=None, event=None, args=None): 
     '''Checks to see if there's a message to deliver'''
+    # TODO: cross-channel notification
+    # Global notification
+    # Specify a channel to notify in
+    # Set notification by PM
+    # Make sure a user is in the channel before delivering a timed message
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
+    # Find all messages based on join/pubmsg due for delivery
     if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
         sender = event.source().split("!")[0].lower()
-        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=?", (sender,)).fetchall()
-        cursor.execute("delete from tell where sendee=?", (sender,))
+        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=? and channel=?", (sender, event.target())).fetchall()
+        cursor.execute("delete from tell where sendee=? and channel=?", (sender, event.target()))
+    # Find all timed messages due fir delivery
     else:
-        currentTime = time.time()  # Save time to account for seconds change between next two lines
+        currentTime = time.time()  # Save the current time to account for seconds change between next two lines
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where deliver<=?", (currentTime,)).fetchall()
         cursor.execute("delete from tell where deliver<=?", (currentTime,))
 
+    # Send the messages resultant from the above DB queries
     for message in messages:
         sender = message[0]
         sendee = message[1]

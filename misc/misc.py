@@ -41,6 +41,7 @@ def addTrivia(connection, event, args):
     dbConn.commit()
 
 
+
 def threeCheers(connection, event, args):
     random.seed(time.time())
     cheers = ["hurrah", "hooray", "huzzah",]
@@ -49,6 +50,7 @@ def threeCheers(connection, event, args):
     for i in range(3):
         connection.privmsg(event.target(), cheer + " for " + args)
         time.sleep(1.1)
+
 
 
 def difficultyCheck(connection, event, args):

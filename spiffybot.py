@@ -106,16 +106,16 @@ def main():
     if pid:
         watchLoop(server)
 
-    # In the parent process, start monitoring the channel
+    # In the parent process, start listening for connections
     while 1:
-        if not DEBUG:
+        if not DEBUG:  # Debug CLI arg disables crash message, enables regular Python exception printing, shows irclib raw data
             try:
                 irc.process_forever()
             except KeyboardInterrupt:
                 break
             except:
-                server.privmsg("spiffytech", "I crashed!")
                 printException()
+                server.privmsg("spiffytech", "I crashed!")
         else:
             irc.process_forever()
             print "here"
@@ -192,7 +192,7 @@ def handleMessage(connection, event):
     cursor.execute("insert into messages values (?, ?, ?, ?)", (sender, event.target(), message, unicode(time.time())))
     dbConn.commit()
 
-    # First, see if this triggers a message delivery for someone
+    # First, see if this triggers a message delivery for whoever just spoke
     tell.deliverMessages(connection, event)
     # Next, check for echoes
     ircTools.echo(connection, event)
@@ -203,8 +203,7 @@ def handleMessage(connection, event):
         if not event.eventtype() == "privmsg":
             message = message.partition(" ")[2]  # No nick at the front of a private message
 
-        # Run the specified command
-
+        # Run the command
         for command in commands.cmds:
             r = re.search(command[0], message)
             if r != None:
@@ -257,7 +256,6 @@ def termInput(conn):
                 conn.privmsg(channel, " ".join(msg[1:]))
             continue
         conn.privmsg(channel, msg)
-
 
 
 
