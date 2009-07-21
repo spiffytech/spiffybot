@@ -36,7 +36,7 @@ def getWeather(irc, event, place):
     try:
         pubDate = xmldoc.getElementsByTagName("pubDate")[0].firstChild.data  # Try to find the weather on the page
     except: 
-        return "I don't know that city"
+        irc.privmsg(event.target(), "I don't know that city")
     pubDate = pubDate.split(" ")[4] + " GMT " + pubDate.split(" ")[5]
     summary = xmldoc.getElementsByTagName("description")[1].firstChild.data
     reply = summary + " (" + pubDate + ")"
