@@ -204,16 +204,18 @@ def handleMessage(connection, event):
             message = message.partition(" ")[2]  # No nick at the front of a private message
 
         # Run the command
+        foundMatch = False
         for command in commands.cmds:
+            print command[0]
             r = re.search(command[0], message)
             if r != None:
-                args = message[r.end():].strip()  # For now, a command always starts the message. args is whatever comes after the command.
+                foundMatch = True
+                args = r.group("args").strip()
                 execString = command[1] + "(connection, event, args)"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
                 eval(execString)
-                return
 
-        reply = "Maybe."  # Respond with this if we don't have anything else to respond with
-        connection.privmsg(event.target(), reply)
+        if foundMatch == False:
+            connection.privmsg(event.target(), "Maybe")  # Respond with this if we don't have anything else to respond with
 
 
 

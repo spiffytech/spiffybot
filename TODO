@@ -23,4 +23,4 @@ Ask questions at program start when generating new database
 Consider moving to a class-based module system
 Fix commandless messages ("spiffybot!")
 Fix special symbols in calc (sup, sub, carat, etc.)
-replace os.fork() with multiprocessing module
+replace os.fork() with multiprocessing/multithreading module
