@@ -10,17 +10,15 @@ Detect nick without detecting similar nicks
     "spiffy" does not catch "spiffytech"
 Make changenick() check for errors after trying to change the nick
 See if I can make irclib.py handle all of the unicode stuff for me
-Fix private messaging response
+Allow bot to respond to private messages
 Implement admin user
 Developer documentation
 Excuse generator
 Easy, simple plugin structure
     Spec files
-    Multi-word regex command interpretation
-        Be able to use regex for grabbing args
 Ask questions at program start when generating new database
     defaults file?
 Consider moving to a class-based module system
-Fix commandless messages ("spiffybot!")
 Fix special symbols in calc (sup, sub, carat, etc.)
 replace os.fork() with multiprocessing/multithreading module
+clean up changenick()

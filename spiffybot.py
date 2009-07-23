@@ -125,12 +125,16 @@ def changeNick(connection=None, event=None, newNick=None):
     '''If the bot's nick is used, this function generates another nick'''
     if connection == None and event == None:  # Called within newBot.py, not from an event handler
         connection.nick(newNick)
+        global nick
         nick = newNick
     else:
         newNick = ""
         if len(connection.nickname) < 15:
-            connection.nick(connection.nickname +  "_")
+            newNick = connection.nickname + "_"
+            connection.nick(newNick)
             joinChannels(connection)
+            nick = newNick
+            print "\n\n\n\nnick = " + nick
         else:
             chars = string.letters + string.numbers
             random.seed(time.time)
@@ -138,6 +142,7 @@ def changeNick(connection=None, event=None, newNick=None):
                 newNick += chars[random.randint(0, len("".letters)-1)]
             connection.nick(newNick)
             joinChannels(connection)
+            nick = newNick
 
 
 ########## Functions to handle channel user connection events ##########
@@ -198,7 +203,9 @@ def handleMessage(connection, event):
     ircTools.echo(connection, event)
 
     # Next, see if the message is something we care about (i.e., a command)
-    if message[0:len(nick)].lower() == nick.lower() or event.eventtype() == "privmsg":  # If it's a command for us:
+    print nick + "[:\-, ]"
+    if re.match(nick + "[:\-, ]", message) or event.eventtype() == "privmsg":  # If it's a command for us:
+        print "stuff"
         # ^^ startswith: "spiffybot: calc" || privmsg part ensures this code is triggered if the message is a PM
         if not event.eventtype() == "privmsg":
             message = message.partition(" ")[2]  # No nick at the front of a private message
