@@ -9,6 +9,7 @@ Implement reboot
 Detect nick without detecting similar nicks
     "spiffy" does not catch "spiffytech"
 Make changenick() check for errors after trying to change the nick
+clean up changenick()
 See if I can make irclib.py handle all of the unicode stuff for me
 Allow bot to respond to private messages
 Implement admin user
@@ -21,4 +22,3 @@ Ask questions at program start when generating new database
 Consider moving to a class-based module system
 Fix special symbols in calc (sup, sub, carat, etc.)
 replace os.fork() with multiprocessing/multithreading module
-clean up changenick()

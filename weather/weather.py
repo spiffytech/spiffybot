@@ -14,31 +14,48 @@
 #along with Spiffybot.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# Weather courtesy Weather Underground, Inc.
 import re
 import urllib
-from xml.dom import minidom  # Yeah, I wrote this before I found out about ElementTree and BeautifulSoup
+from BeautifulSoup import BeautifulStoneSoup
 
-def getWeather(irc, event, place):
+def getWeather(connection, event, args):
+    place=args
     '''Returns the current weather for a given city and state'''
-    # TODO: Find a way to let the user input a zip code instead of city/state
-    channel = event.target()
 
-    if not re.match("[0-9]{5}", place):  # User gave us a zip code
-        city = place.partition(", ")[0].replace(" ", "%20")
-        state = place.partition(", ")[2]
+    # Start off with the forecast data
+    page = urllib.urlopen("http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=%s" % urllib.quote(place))
+    page = page.read()
+    soup = BeautifulStoneSoup(page)
 
-        content = urllib.urlopen("http://www.rssweather.com/wx/us/" + state + "/" + city + "/rss.php")  # Grab the rssweather.com page for this location
-    else:  # User gave us a city & state
-        content = urllib.urlopen("http://www.rssweather.com/zipcode/" + place + "/rss.php")
+    if len(soup.findAll("forecastday")) == 0:  # This seems to be a reliable identifier of places wunderground doesn't recognize
+        connection.privmsg(event.target(), "No such place")
+        return
 
-    xmldoc = minidom.parse(content)
+    forecast = soup.findAll(name="fcttext")
+    if len(forecast) >= 1:  # Some places, especially those outside America, don't have forecasts available.
+        forecast = stripTags(forecast[0])
+    else:
+        del forecast  # Allows us to check it's existence later in the function, and it's useless without data anyway
+    dayHigh = stripTags(soup.findAll(name="high")[0].findAll(name="fahrenheit")[0])
+    dayLow = stripTags(soup.findAll(name="low")[0].findAll(name="fahrenheit")[0])
 
-    try:
-        pubDate = xmldoc.getElementsByTagName("pubDate")[0].firstChild.data  # Try to find the weather on the page
-    except: 
-        irc.privmsg(event.target(), "I don't know that city")
-    pubDate = pubDate.split(" ")[4] + " GMT " + pubDate.split(" ")[5]
-    summary = xmldoc.getElementsByTagName("description")[1].firstChild.data
-    reply = summary + " (" + pubDate + ")"
+    # Now get the current weather data
+    page = urllib.urlopen("http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=%s" % urllib.quote(place))
+    page = page.read()
+    soup = BeautifulStoneSoup(page)
+    temperature = stripTags(soup.findAll(name="temp_f")[0])
+    sampleTime = stripTags(soup.findAll(name="observation_time")[0])
+    sampleTime = " ".join(sampleTime.split()[3:])
+    weatherType = stripTags(soup.findAll(name="weather")[0])
+    location = stripTags(soup.findAll(name="full")[0])
 
-    irc.privmsg(channel, reply)
+    reply = "Weather for %s (as of %s): %sF and %s. High/low: %s/%sF. " % (location, sampleTime, temperature, weatherType.lower(), dayHigh, dayLow)
+    if "forecast" in locals():
+        reply += "Forecast: %s" % forecast
+    connection.privmsg(event.target(), reply)
+
+
+def stripTags(text):
+    '''Strips the XML tags from data. I can't believe BeautifulSoup doesn't do this already.'''
+    return ''.join(BeautifulStoneSoup(str(text)).findAll(text=True))

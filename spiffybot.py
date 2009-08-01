@@ -118,7 +118,6 @@ def main():
                 server.privmsg("spiffytech", "I crashed!")
         else:
             irc.process_forever()
-            print "here"
 
 
 def changeNick(connection=None, event=None, newNick=None):
@@ -134,7 +133,6 @@ def changeNick(connection=None, event=None, newNick=None):
             connection.nick(newNick)
             joinChannels(connection)
             nick = newNick
-            print "\n\n\n\nnick = " + nick
         else:
             chars = string.letters + string.numbers
             random.seed(time.time)
@@ -203,9 +201,7 @@ def handleMessage(connection, event):
     ircTools.echo(connection, event)
 
     # Next, see if the message is something we care about (i.e., a command)
-    print nick + "[:\-, ]"
     if re.match(nick + "[:\-, ]", message) or event.eventtype() == "privmsg":  # If it's a command for us:
-        print "stuff"
         # ^^ startswith: "spiffybot: calc" || privmsg part ensures this code is triggered if the message is a PM
         if not event.eventtype() == "privmsg":
             message = message.partition(" ")[2]  # No nick at the front of a private message
