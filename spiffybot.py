@@ -89,6 +89,7 @@ def main():
 
     # Add handler functions for various IRC events
     irc.add_global_handler("pubmsg", handleMessage)
+    irc.add_global_handler("ctcp", handleMessage)
     irc.add_global_handler("privmsg", handleMessage)
     irc.add_global_handler("join", handleJoin)
     irc.add_global_handler("part", handlePart)
@@ -146,6 +147,7 @@ def changeNick(connection=None, event=None, newNick=None):
 ########## Functions to handle channel user connection events ##########
 # All of these functions just call recordEvent, but are here in case I ever want do do more than that when handling events
 def handleJoin(connection, event):
+    tell.deliverMessages(connection, event)
     recordEvent(event)
 
 def handlePart(connection, event):
@@ -267,7 +269,7 @@ def termInput(conn):
 def watchLoop(conn):
     while 1:
         time.sleep(3)
-        tell.deliverMessages(conn)
+#        tell.deliverMessages(conn)
 
 
 

@@ -71,7 +71,7 @@ def deliverMessages(connection=None, event=None, args=None):
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
-    # Find all messages based on join/pubmsg due for delivery
+# Find all messages based on join/pubmsg due for delivery
     if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
         sender = event.source().split("!")[0].lower()
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=? and channel=?", (sender, event.target())).fetchall()

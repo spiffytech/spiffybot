@@ -6,8 +6,6 @@ Try to reclaim nick if it was lot due to a network interrupt
 Track channels the bot is in and rejoin them on starup
     Include a debug option for testing without join/part spamming channels
 Implement reboot
-Detect nick without detecting similar nicks
-    "spiffy" does not catch "spiffytech"
 Make changenick() check for errors after trying to change the nick
 clean up changenick()
 See if I can make irclib.py handle all of the unicode stuff for me
