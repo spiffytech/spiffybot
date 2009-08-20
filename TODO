@@ -12,7 +12,6 @@ See if I can make irclib.py handle all of the unicode stuff for me
 Allow bot to respond to private messages
 Implement admin user
 Developer documentation
-Excuse generator
 Easy, simple plugin structure
     Spec files
 Ask questions at program start when generating new database

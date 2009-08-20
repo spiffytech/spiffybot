@@ -32,6 +32,16 @@ def trivia(connection, event, args):
 
 
 
+def excuse(connection, event, args):
+    '''Responds with a random excuse'''
+    excuses = pickle.load(open("misc/excuses.pickle"))
+    random.seed(time.time())
+    fact = random.choice(excuses)
+    print "Replying in channel" + event.target()
+    connection.privmsg(event.target(), fact)
+
+
+
 def threeCheers(connection, event, args):
     random.seed(time.time())
     cheers = ["hurrah", "hooray", "huzzah",]

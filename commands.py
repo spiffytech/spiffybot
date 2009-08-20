@@ -23,6 +23,7 @@ cmds = [
     ("(?P<cmd>^encode)(?P<args>.*)", "mcode.encode"),
     ("(?P<cmd>^decode)(?P<args>.*)", "mcode.decode"),
     ("(?P<cmd>^fact)(?P<args>.*)", "misc.trivia"),
+    ("(?P<cmd>^excuse)(?P<args>.*)", "misc.excuse"),
     ("(?P<cmd>^get out)(?P<args>)", "cmdPart"),
     ("(?P<cmd>^help)(?P<args>.*)", "help.help"),
     ("(?P<cmd>^join)(?P<args>.*)", "cmdJoin"),

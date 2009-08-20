@@ -1,0 +1,422 @@
+(lp0
+S'Flagrant System Error: Computer Over. Virus = Very Yes'
+p1
+aS'That is beyond the scope of this document.'
+p2
+aS'Firewall melted'
+p3
+aS'Train crash in the SSH tunnel'
+p4
+aS'Solar flares'
+p5
+aS'Electromagnetic radiation from satellite debris'
+p6
+aS'Static from nylon underwear'
+p7
+aS'Global warming'
+p8
+aS'Poor power conditioning'
+p9
+aS'Static buildup'
+p10
+aS'Doppler effect'
+p11
+aS'Hardware stress fractures'
+p12
+aS'Magnetic interference from credit cards'
+p13
+aS'Sounds like a Windows problem, try calling Microsoft support'
+p14
+aS'Fat electrons in the lines'
+p15
+aS'Divide-by-zero error'
+p16
+aS'Monitor resolution too high'
+p17
+aS'Improperly oriented keyboard'
+p18
+aS'First Saturday after first full moon in Winter'
+p19
+aS'CPU radiator broken'
+p20
+aS'My brain thought you were talking about something else for some reason.'
+p21
+aS'Vino reports life is better without a scrolly thing.'
+p22
+aS'Cellular telephone interference'
+p23
+aS'(l)user error'
+p24
+aS'Secretary plugged hairdryer into UPS'
+p25
+aS'Terrorist activities'
+p26
+aS'Not enough memory, go get system upgrade'
+p27
+aS'Interrupt configuration error'
+p28
+aS'Boss forgot system password'
+p29
+aS'Bad ether in the cables'
+p30
+aS'Evil dogs hypnotised the night shift'
+p31
+aS'Groundskeepers stole the root password'
+p32
+aS'High pressure system failure'
+p33
+aS'System has been recalled'
+p34
+aS'Not approved by the FCC'
+p35
+aS'Need to wrap system in aluminum foil to fix problem'
+p36
+aS'CPU needs recalibration'
+p37
+aS'System needs to be rebooted'
+p38
+aS'Bit bucket overflow'
+p39
+aS'Only available on a need to know basis'
+p40
+aS'Satan did it'
+p41
+aS'Daemons did it'
+p42
+aS"You're out of memory"
+p43
+aS"There isn't any problem"
+p44
+aS'Typo in the code'
+p45
+aS'Someone is standing on the ethernet cable, causing a kink in the cable'
+p46
+aS'Windows 95 undocumented "feature"'
+p47
+aS'Password is too complex to decrypt'
+p48
+aS'Electromagnetic energy loss'
+p49
+aS'Budget cuts'
+p50
+aS'Mouse chewed through power cable'
+p51
+aS'Feature not yet implemented'
+p52
+aS'Internet outage'
+p53
+aS'Pentium FDIV bug'
+p54
+aS'Vendor no longer supports the product'
+p55
+aS'Small animal kamikaze attack on power supplies'
+p56
+aS'Collapsed Backbone'
+p57
+aS'Operators on strike due to broken coffee machine'
+p58
+aS"The keyboard isn't plugged in"
+p59
+aS'The electricity substation in the car park blew up.'
+p60
+aS'The rolling stones concert down the road caused a brown out'
+p61
+aS'The monitor is plugged into the serial port'
+p62
+aS'Root nameservers are out of sync'
+p63
+aS'Electro-magnetic pulses from French above ground nuke testing.'
+p64
+aS"Your keyboard's space bar is generating spurious keycodes."
+p65
+aS'The real ttys became pseudo ttys and vice-versa.'
+p66
+aS'The printer thinks its a router.'
+p67
+aS'The router thinks its a printer.'
+p68
+aS'Evil hackers from Serbia.'
+p69
+aS'We just switched to Sprint.'
+p70
+aS'It has Intel Inside'
+p71
+aS'Sticky bits on disk.'
+p72
+aS'Power Company having EMP problems with their reactor'
+p73
+aS'The ring needs another token'
+p74
+aS'New management'
+p75
+aS"It's not plugged in."
+p76
+aS'Daemons loose in system.'
+p77
+aS'Dew on the telephone lines.'
+p78
+aS'Defunct processes'
+p79
+aS'No "any" key on keyboard'
+p80
+aS'/pub/lunch'
+p81
+aS'Recursive traversal of loopback mount points'
+p82
+aS'Vapors from evaporating sticky-note adhesives'
+p83
+aS'Sticktion'
+p84
+aS'Short leg on process table'
+p85
+aS'Ether leak'
+p86
+aS'Endothermal recalibration'
+p87
+aS'Permission denied'
+p88
+aS'..disk or the processor is on fire.'
+p89
+aS'Proprietary Information.'
+p90
+aS'Post-it Note Sludge leaked into the monitor.'
+p91
+aS'Kernel panic: write-only-memory (/dev/wom0) capacity exceeded.'
+p92
+aS'Write-only-memory subsystem too slow for this machine. Contact your local dealer.'
+p93
+aS'We are currently trying a new concept of using a live mouse.  Unfortunately, one has yet to survive being hooked up to the computer.....please bear with us.'
+p94
+aS"Your mail is being routed through Germany ... and they're censoring us."
+p95
+aS'Lightning strikes.'
+p96
+aS"Fluorescent lights are generating negative ions. If turning them off doesn't work, take them out and put tin foil on the ends."
+p97
+aS'High nuclear activity in your area.'
+p98
+aS"What office are you in? Oh, that one.  Did you know that your building was built over the universities first nuclear research site? And wow, aren't you the lucky one, your office is right over where the core is buried!"
+p99
+aS'Someone thought The Big Red Button was a light switch.'
+p100
+aS"The mainframe needs to rest.  It's getting old, you know."
+p101
+aS"I'm not sure.  Try calling the Internet's head office -- it's in the book."
+p102
+aS'A star wars satellite accidently blew up the WAN.'
+p103
+aS'Fatal error right in front of screen'
+p104
+aS'That function is not currently supported, but Bill Gates assures us it will be featured in the next upgrade.'
+p105
+aS'Lusers learning curve appears to be fractal'
+p106
+aS'Too many little pins on CPU confusing it, bend back and forth until 10-20% are neatly removed. Do _not_ leave metal bits visible!'
+p107
+aS'Your cat tried to eat the mouse.'
+p108
+aS'The Borg tried to assimilate your system. Resistance is futile.'
+p109
+aS'It must have been the lightning storm we had (yesterday) (last week) (last month)'
+p110
+aS'Due to Federal Budget problems we have been forced to cut back on the number of users able to access the system at one time. (namely none allowed....)'
+p111
+aS'Too much radiation coming from the soil.'
+p112
+aS"Unfortunately we have run out of bits/bytes/whatever. Don't worry, the next supply will be coming next week."
+p113
+aS'Program load too heavy for processor to lift.'
+p114
+aS'Our ISP is having {switching,routing,SMDS,frame relay} problems'
+p115
+aS'You need to install an RTFM interface.'
+p116
+aS"That's easy to fix, but I can't be bothered."
+p117
+aS"Someone's tie is caught in the printer, and if anything else gets printed, he'll be in it too."
+p118
+aS"We're upgrading /dev/null"
+p119
+aS'Our POP server was kidnapped by a weasel.'
+p120
+aS"It's stuck in the Web."
+p121
+aS'All of the packets are empty.'
+p122
+aS'The UPS is on strike.'
+p123
+aS'It was OK before you touched it.'
+p124
+aS'U.S. Postal Service'
+p125
+aS'Your Flux Capacitor has gone bad.'
+p126
+aS'The Dilithium Crystals need to be rotated.'
+p127
+aS'High altitude condensation from U.S.A.F prototype aircraft has contaminated the primary subnet mask. Turn off your computer for 9 days to avoid damaging it.'
+p128
+aS'Lawn mower blade in your fan need sharpening'
+p129
+aS"Hard drive sleeping. Let it wake up on it's own..."
+p130
+aS'Interference between the keyboard and the chair.'
+p131
+aS"You must've hit the wrong any key."
+p132
+aS'Fractal radiation jamming the backbone'
+p133
+aS'Routing problems on the neural net'
+p134
+aS'CD-ROM server needs recalibration'
+p135
+aS'Firewall needs cooling'
+p136
+aS'Elves on strike.'
+p137
+aS'Internet exceeded Luser level, please wait until a luser logs off before attempting to log back on.'
+p138
+aS'Your email is now being delivered by the USPS.'
+p139
+aS"Your computer hasn't been returning all the bits it gets from the Internet."
+p140
+aS'Scheduled global CPU outage'
+p141
+aS'The POP server is out of Coke'
+p142
+aS'Server depressed, needs Prozac'
+p143
+aS'Those damn raccoons!'
+p144
+aS'50% of the manual is in .pdf readme files'
+p145
+aS'The xy axis in the trackball is coordinated with the summer solstice'
+p146
+aS'The butane lighter causes the pincushioning'
+p147
+aS"We'll fix that in the next (upgrade, update, patch release, service pack)."
+p148
+aS'Having to manually track the satellite.'
+p149
+aS'Your/our computer(s) had suffered a memory leak, and we are waiting for them to be topped up.'
+p150
+aS'The rubber band broke'
+p151
+aS'Paradigm shift...without a clutch'
+p152
+aS'PEBKAC (Problem Exists Between Keyboard And Chair)'
+p153
+aS'The cables are not the same length.'
+p154
+aS'The daemons! the daemons! the terrible daemons!'
+p155
+aS'Struck by the Good Times virus'
+p156
+aS"Your parity check is overdrawn and you're out of cache."
+p157
+aS'Out of cards on drive D:'
+p158
+aS'Parallel processors running perpendicular today'
+p159
+aS'Webmasters kidnapped by evil cult.'
+p160
+aS'Virus transmitted from computer to sysadmins.'
+p161
+aS'Forced to support NT servers; sysadmins quit.'
+p162
+aS"It's the InterNIC's fault."
+p163
+aS'Root name servers corrupted.'
+p164
+aS'Budget cuts forced us to sell all the power cords for the servers.'
+p165
+aS'Operators killed by year 2000 bug bite.'
+p166
+aS'Dyslexics retyping hosts file on servers'
+p167
+aS'The Internet is being scanned for viruses.'
+p168
+aS'Bad karma.'
+p169
+aS'/dev/clue was linked to /dev/null'
+p170
+aS'Increased sunspot activity.'
+p171
+aS'We already sent around a notice about that.'
+p172
+aS"It's union rules. There's nothing we can do about it. Sorry."
+p173
+aS'Jupiter is aligned with Mars.'
+p174
+aS'Mail server hit by UniSpammer.'
+p175
+aS"T-1's congested due to porn traffic to the news server."
+p176
+aS'Data for intranet got routed through the extranet and landed on the internet.'
+p177
+aS'We are a 100% Microsoft Shop.'
+p178
+aS'We are Microsoft.  What you are experiencing is not a problem; it is an undocumented feature.'
+p179
+aS"Sales staff sold a product we don't offer."
+p180
+aS'Sysadmin accidentally destroyed pager with a large hammer.'
+p181
+aS'Sysadmins unavailable because they are in a meeting talking about why they are unavailable so much.'
+p182
+aS'Computers under water due to SYN flooding.'
+p183
+aS"We're out of slots on the server"
+p184
+aS'Computer room being moved.  Our systems are down for the weekend.'
+p185
+aS'Repeated reboots of the system failed to solve problem'
+p186
+aS'Feature was not beta tested'
+p187
+aS'Domain controller not responding'
+p188
+aS'Someone else stole your IP address, call the Internet detectives!'
+p189
+aS"It's not RFC-822 compliant."
+p190
+aS'Operation failed because: there is no message for this error (#1014)'
+p191
+aS'Firmware update in the coffee machine'
+p192
+aS'Temporal anomaly'
+p193
+aS'Mouse has out-of-cheese-error'
+p194
+aS'Borg implants are failing'
+p195
+aS'Borg nanites have infested the server'
+p196
+aS'Error: one bad user found in front of screen'
+p197
+aS'Please state the nature of the technical emergency'
+p198
+aS'Internet shut down due to maintenance'
+p199
+aS'Daemon escaped from pentagram'
+p200
+aS'Crop circles in the corn shell'
+p201
+aS'Sticky bit has come loose'
+p202
+aS'Hot Java has gone cold'
+p203
+aS'Trojan horse ran out of hay'
+p204
+aS'Zombie processes detected, machine is haunted.'
+p205
+aS'Overflow error in /dev/null'
+p206
+aS"Browser's cookie is corrupted -- someone's been nibbling on it."
+p207
+aS'Mailer-daemon is busy burning your message in hell.'
+p208
+aS"According to Microsoft, it's by design"
+p209
+aS'Somebody ran the operating system through a spelling checker.'
+p210
+a.
