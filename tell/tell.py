@@ -46,11 +46,14 @@ def tell(connection, event, args):
 
     # Parse the time to deliver the message (if any)
     deliver = args.split(" in ")[-1]
+#    print "deliver = " + str(deliver)
     p = pdt.Calendar(pdc.Constants())  # Use parsedatetime module to easily handle human date formatting
     deliver = p.parse(deliver)
+#    print "deliver = " + str(deliver)
     if deliver[1] == 0:  # Tried to parse an invalid time (i.e., we can't parse "stuff")
         deliver = None
     else:
+#        print "here"
         deliver = deliver[0]
         deliver = "%d-%d-%d %d:%d:%d" % (deliver[0], deliver[1], deliver[2], deliver[3], deliver[4], deliver[5])  # Format the deliver into a string for toEpoch()
         deliver = epochTools.toEpoch(deliver, format="%Y-%m-%d %H:%M:%S")  # deliverstamp for DB storage
@@ -71,14 +74,16 @@ def deliverMessages(connection=None, event=None, args=None):
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
-# Find all messages based on join/pubmsg due for delivery
+    # Deliver messages based on user events (join, pubmsg)
     if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
         sender = event.source().split("!")[0].lower()
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=? and channel=?", (sender, event.target())).fetchall()
         cursor.execute("delete from tell where sendee=? and channel=?", (sender, event.target()))
-    # Find all timed messages due fir delivery
+    # Deliver messages that were marked for delivery at a specific time
     else:
         currentTime = time.time()  # Save the current time to account for seconds change between next two lines
+#        print currentTime
+#        print cursor.execute("select deliver from tell where sendee='dood2'").fetchall()
         messages = cursor.execute("select sender, sendee, message, channel, sent from tell where deliver<=?", (currentTime,)).fetchall()
         cursor.execute("delete from tell where deliver<=?", (currentTime,))
 

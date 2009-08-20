@@ -269,7 +269,7 @@ def termInput(conn):
 def watchLoop(conn):
     while 1:
         time.sleep(3)
-#        tell.deliverMessages(conn)
+        tell.deliverMessages(conn)
 
 
 

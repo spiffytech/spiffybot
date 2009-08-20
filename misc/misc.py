@@ -16,6 +16,7 @@
 #along with Spiffybot.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
+import cPickle as pickle
 from sqlite3 import dbapi2 as sqlite
 import time
 
@@ -23,22 +24,11 @@ dbName = "logs.db"
 
 def trivia(connection, event, args):
     '''Responds with a random trivial fact'''
-    dbConn = sqlite.connect("logs.db")
-    cursor = dbConn.cursor()
-
-    sender = event.source().split("!")[0]
-    fact = cursor.execute("SELECT * FROM trivia ORDER BY RANDOM() LIMIT 1").fetchone()[0]
+    trivia = pickle.load(open("misc/trivia.pickle"))
+    random.seed(time.time())
+    fact = random.choice(trivia)
     print "Replying in channel" + event.target()
-    connection.privmsg(event.target(), sender+" : "+fact)
-
-def addTrivia(connection, event, args):
-    '''Add a trivia fact to the database'''
-    dbConn = sqlite.connect("logs.db")
-    cursor = dbConn.cursor()
-
-    sender = event.source().split("!")[0]
-    cursor.execute("insert into trivia values (?, ?)", (sender, args))
-    dbConn.commit()
+    connection.privmsg(event.target(), fact)
 
 
 
