@@ -9,13 +9,13 @@ Implement reboot
 Make changenick() check for errors after trying to change the nick
 clean up changenick()
 See if I can make irclib.py handle all of the unicode stuff for me
-Allow bot to respond to private messages
 Implement admin user
 Developer documentation
 Easy, simple plugin structure
     Spec files
-Ask questions at program start when generating new database
-    defaults file?
 Consider moving to a class-based module system
 Fix special symbols in calc (sup, sub, carat, etc.)
 replace os.fork() with multiprocessing/multithreading module
+Unit testing
+
+Fix bug "calc speed of light * meters/hertz"

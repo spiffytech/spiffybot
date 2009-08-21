@@ -1,5 +1,5 @@
 # Brian Cottingham
-# 2009-04-14
+# Originally created 2009-04-14
 # Simple morse code conversion. Does not handle Unicode (not that morse code does, either)
 
 #This file is part of Spiffybot.
@@ -77,29 +77,26 @@ code = {
 }
 
 
-def encode(irc, event, s):
+def encode(event):
     '''Encodes a string into morse code'''
-    channel = event.target()
     encoded = ""
-    for letter in s: 
+    for letter in event.args: 
         letter = letter.lower()
         try:
             encoded += code[letter] + " "
         except:
             encoded += letter
-    irc.privmsg(channel, encoded)
+    event.reply(encoded)
 
 
 
-def decode(irc, event, m):
+def decode(event):
     '''Decodes a string from morse code. Relies on standard spacing of characters/words/sentences'''
-    channel = event.target()
-    s = ""
-    codes = m.split()
+    decoded = ""
+    codes = event.args.split()
     for char in codes:  # For every morse-encoded letter we were passed
         for letter in code:  # See if it matches a letter in the code dict
             if code[letter] == char:
-                s += letter
+                decoded += letter
                 break
-
-    irc.privmsg(channel, s)
+    event.reply(decoded)

@@ -1,6 +1,6 @@
 # Brian Cottingham
 # spiffytech@gmail.com
-# 2009-05-07
+# Originally created on 2009-05-07
 # Plays Russian Roulette
 
 #This file is part of Spiffybot.
@@ -23,15 +23,15 @@ import random
 
 channels = {}
 
-def roulette(connection, event, args):
+def roulette(event):
     '''Plays Russian Roulette. When finished, will try to kick a nick from the channel when hit.'''
-    if not event.target() in channels:
-        channels[event.target()] = channel()
-    c = channels[event.target()]
-    if args == "spin":
-        c.spin(connection, event)
+    if not event.channel in channels:
+        channels[event.channel] = channel()
+    c = channels[event.channel]
+    if event.args == "spin":
+        c.spin(event)
     else:
-        c.shoot(connection, event)
+        c.shoot(event)
 
 
 
@@ -59,23 +59,23 @@ class channel():
             "Too bad. Maybe this time will turn out better."
         )
 
-    def spin(self, connection, event):
+    def spin(self, event):
         self.currentBarrel = 7
         self.bulletLoc = random.randint(1, 6)
-        connection.privmsg(event.target(), "*spin*")
-        connection.privmsg(event.target(), "Don't like counting chambers, eh?")
+        event.reply("*spin*")
+        event.reply("Don't like counting chambers, eh?")
 
-    def shoot(self, connection, event):
+    def shoot(self, event):
         self.currentBarrel -= 1
         if self.currentBarrel == self.bulletLoc:
-            connection.privmsg(event.target(), "Bang! %s is dead!" % event.source().split("!")[0])
+            event.reply("Bang! %s is dead!" % event.sender)
             self.currentBarrel = 0
         else:
-            connection.privmsg(event.target(), "*click*")
-            connection.privmsg(event.target(), random.choice(self.emptyPhrases))
+            event.reply("*click*")
+            event.reply(random.choice(self.emptyPhrases))
 
         if self.currentBarrel == 0:
             self.currentBarrel = 7
             self.bulletLoc = random.randint(1, 6)
-            connection.privmsg(event.target(), "RELOAD! *click* *spin*")
-            connection.privmsg(event.target(), random.choice(self.reloadPhrases))
+            event.reply("RELOAD! *click* *spin*")
+            event.reply(random.choice(self.reloadPhrases))

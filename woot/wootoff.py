@@ -27,9 +27,8 @@ soldout = 1
 
 url = "http://www.woot.com/salerss.aspx"
 
-def checkWoot(irc, event, args="", force=True):
+def checkWoot(event, force=True):
     '''Checks woot.com for the latest deal. force says whether to report the deal if it hasn't changed since the last check.'''
-    channel = event.target()
     global latestTitle
     global latestPrice
     global soldout
@@ -48,4 +47,4 @@ def checkWoot(irc, event, args="", force=True):
         return
     latestTitle = title
     latestPrice = price
-    irc.privmsg(channel, "Woot! - %s --- %s --- %s%% left! --- Purchase: %s" % (unicode(latestTitle), unicode(latestPrice), unicode(soldout), buylink))
+    event.reply("Woot! - %s --- %s --- %s%% left! --- Purchase: %s" % (unicode(latestTitle), unicode(latestPrice), unicode(soldout), buylink))

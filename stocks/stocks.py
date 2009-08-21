@@ -16,11 +16,12 @@
 import csv
 import urllib
 
-def quote(connection=None, event=None, symbol=None):
+def quote(event):
+    symbol = event.args
     page = urllib.urlopen("http://finance.yahoo.com/d/quotes.csv?s=%s&f=l1c1p2jkns" % symbol).read().split("\n")
     quotes = csv.DictReader(page, fieldnames=("last", "change", "changePercent", "52low", "52high", "name", "symbol"), delimiter=",")
     for q in quotes:
-        connection.privmsg(event.target(), "%s (%s) || Current price: %s || Change today: %s (%s) || 52-week low/high: %s / %s" % (q["symbol"], q["name"], q["last"], q["change"], q["changePercent"], q["52low"], q["52high"]))
+        event.reply("%s (%s) || Current price: %s || Change today: %s (%s) || 52-week low/high: %s / %s" % (q["symbol"], q["name"], q["last"], q["change"], q["changePercent"], q["52low"], q["52high"]))
 
 
 # Query formatter

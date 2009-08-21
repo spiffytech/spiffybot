@@ -30,22 +30,20 @@ import time
 
 dbName = "logs.db"
 
-def tell(connection, event, args):
+def tell(event):
     '''Saves a message to deliver to someone later'''
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
-    sender = event.source().split("!")[0]
-    sendee = args.split()[0].lower()  # To whom should the message be delivered
+    sendee = event.args.split()[0].lower()  # To whom should the message be delivered
     if sendee == "me" or sendee == "myself":
-        sendee = sender
-    channel = event.target()
-    message = " ".join(args.split()[1:])
+        sendee = event.sender
+    message = " ".join(event.args.split()[1:])
     if len(message.split(" in ")) > 1:
         message = " ".join(message.split(" in ")[:-1])
 
     # Parse the time to deliver the message (if any)
-    deliver = args.split(" in ")[-1]
+    deliver = event.args.split(" in ")[-1]
 #    print "deliver = " + str(deliver)
     p = pdt.Calendar(pdc.Constants())  # Use parsedatetime module to easily handle human date formatting
     deliver = p.parse(deliver)
@@ -58,13 +56,13 @@ def tell(connection, event, args):
         deliver = "%d-%d-%d %d:%d:%d" % (deliver[0], deliver[1], deliver[2], deliver[3], deliver[4], deliver[5])  # Format the deliver into a string for toEpoch()
         deliver = epochTools.toEpoch(deliver, format="%Y-%m-%d %H:%M:%S")  # deliverstamp for DB storage
 
-    cursor.execute("insert into tell (sender, sendee, channel, message, deliver, sent) values (?, ?, ?, ?, ?, ?)", (sender, sendee, channel, message, deliver, time.time()))
-    connection.privmsg(event.target(), "Will do!")
+    cursor.execute("insert into tell (sender, sendee, channel, message, deliver, sent) values (?, ?, ?, ?, ?, ?)", (event.sender, sendee, event.channel, message, deliver, time.time()))
+    event.reply("Will do!")
     dbConn.commit()
 
 
 
-def deliverMessages(connection=None, event=None, args=None): 
+def deliverMessages(event=None):  # Use None for the timed message delivery, which passes no events
     '''Checks to see if there's a message to deliver'''
     # TODO: cross-channel notification
     # Global notification
@@ -75,16 +73,15 @@ def deliverMessages(connection=None, event=None, args=None):
     cursor = dbConn.cursor()
 
     # Deliver messages based on user events (join, pubmsg)
-    if event != None and (event.eventtype() == "pubmsg" or event.eventtype() == "join"):  # See if someone came back from idle or joined
-        sender = event.source().split("!")[0].lower()
-        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=? and channel=?", (sender, event.target())).fetchall()
-        cursor.execute("delete from tell where sendee=? and channel=?", (sender, event.target()))
+    if event == None or (event.eventType == "pubmsg" or "join"):  # See if someone came back from idle or joined
+        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where sendee=? and channel=?", (event.sender, event.channel)).fetchall()
+        cursor.execute("delete from tell where sendee=? and channel=?", (event.sender, event.channel))
     # Deliver messages that were marked for delivery at a specific time
     else:
         currentTime = time.time()  # Save the current time to account for seconds change between next two lines
 #        print currentTime
 #        print cursor.execute("select deliver from tell where sendee='dood2'").fetchall()
-        messages = cursor.execute("select sender, sendee, message, channel, sent from tell where deliver<=?", (currentTime,)).fetchall()
+        messages = cursor.execute("select event.sender, sendee, message, event.channel, sent from tell where deliver<=?", (currentTime,)).fetchall()
         cursor.execute("delete from tell where deliver<=?", (currentTime,))
 
     # Send the messages resultant from the above DB queries
@@ -94,5 +91,5 @@ def deliverMessages(connection=None, event=None, args=None):
         messageText = message[2]
         channel = message[3]
         deliveryTime = epochTools.fromEpoch(message[4])
-        connection.privmsg(channel, "%s, message from %s at %s: %s" % (sendee, sender, deliveryTime, messageText))
+        event.reply("%s, message from %s at %s: %s" % (sendee, sender, deliveryTime, messageText))
     dbConn.commit()

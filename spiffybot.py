@@ -38,7 +38,25 @@ from woot import wootoff
 # =========
 
 
+class ircEvent:
+    def __init__(self, connection, event, args):
+        self.connection = connection
+        self.eventType = event.eventtype()
+        self.nick = nick
+        self.user = event.sourceuser()  # User who instigated an event (join, part, pubmsg, etc.)
+        self.sender = event.source().split("!")[0]
+        self.args = args
+        if event.target() == self.nick:  # private messages
+            self.channel = self.sender
+        else:
+            self.channel = event.target()
+    def reply(self, message):
+        self.connection.privmsg(self.channel, message)
 
+
+
+
+# Enable debug mode if the appropriate command line parameter was passed
 if len(sys.argv) > 1 and sys.argv[1] == "--debug":
     DEBUG = True
 else:
@@ -46,6 +64,7 @@ else:
 
 
 def printException(maxTBlevel=5):
+    '''This code is copy/pasted. I don't know how it works, and it doesn't work completely.'''
     cla, exc, trbk = sys.exc_info()
     excName = cla.__name__
     try:
@@ -147,27 +166,29 @@ def changeNick(connection=None, event=None, newNick=None):
 ########## Functions to handle channel user connection events ##########
 # All of these functions just call recordEvent, but are here in case I ever want do do more than that when handling events
 def handleJoin(connection, event):
-    tell.deliverMessages(connection, event)
+    event = ircEvent(connection, event, args=None)
+    tell.deliverMessages(event)
     recordEvent(event)
 
 def handlePart(connection, event):
+    event = ircEvent(connection, event, args=None)
     recordEvent(event)
 
 def handleQuit(connection, event):
+    event = ircEvent(connection, event, args=None)
     recordEvent(event)
 
 def handleKick(connection, event):
+    event = ircEvent(connection, event, args=None)
     recordEvent(event)
 
 def recordEvent(event):
     '''Log channel all connection events to the database. There's no real reason for it presently; just doing it for kicks and giggles.'''
     global dbConn
     global cursor
-    user = event.sourceuser().decode("utf-8")
+    user = event.user.decode("utf-8")
     alteredTime = str(time.time())
-    channel = event.target()
-    type = event.eventtype()
-    cursor.execute("insert into connevents values (?, ?, ?, ?)", (user, type, channel, alteredTime))
+    cursor.execute("insert into connevents values (?, ?, ?, ?)", (user, event.eventType, event.channel, alteredTime))
     dbConn.commit()
 ########################################################################
 
@@ -198,7 +219,7 @@ def handleMessage(connection, event):
     dbConn.commit()
 
     # First, see if this triggers a message delivery for whoever just spoke
-    tell.deliverMessages(connection, event)
+    tell.deliverMessages(ircEvent(connection, event, args=None))
     # Next, check for echoes
     ircTools.echo(connection, event)
 
@@ -216,7 +237,8 @@ def handleMessage(connection, event):
             if r != None:
                 foundMatch = True
                 args = r.group("args").strip()
-                execString = command[1] + "(connection, event, args)"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
+                event = ircEvent(connection, event, args)
+                execString = command[1] + "(event)"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
                 eval(execString)
 
         if foundMatch == False:
@@ -266,10 +288,10 @@ def termInput(conn):
 
 
 
-def watchLoop(conn):
+def watchLoop(connection):
     while 1:
         time.sleep(3)
-        tell.deliverMessages(conn)
+#        tell.deliverMessages(ircEvent(connection, event=None, args=None))
 
 
 

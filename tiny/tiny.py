@@ -20,16 +20,19 @@
 
 import urllib
 
-def tiny_url(irc=None, event=None, url=None):
-    if event != None:
-        channel = event.target()
+def tiny_url(event=None):
     '''Converts a long url to a tinyurl'''
+    if event.args == None:
+        event.reply("Give me a url!")
+        return
+    else:
+        url = event.args
     # URL must start with HTTP!
     if not url.startswith("http://"):
         url = "http://" + url
     apiurl = "http://tinyurl.com/api-create.php?url="
     tinyurl = urllib.urlopen(apiurl + url).read()
     if event != None:
-        irc.privmsg(channel, tinyurl)
+        event.reply(tinyurl)
     else:
         return tinyurl

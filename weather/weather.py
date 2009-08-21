@@ -19,8 +19,8 @@ import re
 import urllib
 from BeautifulSoup import BeautifulStoneSoup
 
-def getWeather(connection, event, args):
-    place=args
+def getWeather(event):
+    place = event.args
     '''Returns the current weather for a given city and state'''
 
     # Start off with the forecast data
@@ -29,7 +29,7 @@ def getWeather(connection, event, args):
     soup = BeautifulStoneSoup(page)
 
     if len(soup.findAll("forecastday")) == 0:  # This seems to be a reliable identifier of places wunderground doesn't recognize
-        connection.privmsg(event.target(), "No such place")
+        event.reply("No such place")
         return
 
     forecast = soup.findAll(name="fcttext")
@@ -53,7 +53,7 @@ def getWeather(connection, event, args):
     reply = "Weather for %s (as of %s): %sF and %s. High/low: %s/%sF. " % (location, sampleTime, temperature, weatherType.lower(), dayHigh, dayLow)
     if "forecast" in locals():
         reply += "Forecast: %s" % forecast
-    connection.privmsg(event.target(), reply)
+    event.reply(reply)
 
 
 def stripTags(text):

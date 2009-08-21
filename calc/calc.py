@@ -1,7 +1,7 @@
 # Brian Cottingham
 # spiffytech@gmail.com
 # 2009-04-02
-# Performs calculations with Google Calculator. Should be able to perform any calculation the Goog can.
+# Performs calculations with Google Calculator. Should be able to perform any calculation that Google can.
 
 #This file is part of Spiffybot.
 #
@@ -22,9 +22,9 @@ import re
 import urllib
 
 
-def calc(irc, event, equation):
+def calc(event):
     '''Uses Google Calculator to perform calculations'''
-    channel = event.target()
+    equation = event.args
     opener = myOpener()  # Good ol' useragent spoofing
     page = opener.open("http://www.google.com/search?num=1&q=%s" % urllib.quote(equation)).read()  # Get the page from Google
     try:
@@ -32,8 +32,7 @@ def calc(irc, event, equation):
     except:  # Couldn't find the calc output (note that calc (presently) only does actual calculations- not time zones, etc.
         reply = "Google doesn't think that question is worth answering"
 
-    irc.privmsg(channel, reply)
-
+    event.reply(reply)
 
 
 class myOpener(urllib.FancyURLopener):  # Google doesn't like the urllib "urllib_version" useragent. Subclass it to override the useragent.
