@@ -52,6 +52,10 @@ class ircEvent:
             self.channel = event.target()
     def reply(self, message):
         self.connection.privmsg(self.channel, message)
+    def setNick(self, newNick):
+        self.connection.nick(newNick)
+        global nick
+        nick = newNick
 
 
 
@@ -246,14 +250,12 @@ def handleMessage(connection, event):
 
 
 
-def cmdJoin(connection, event, args):
-    connection.join(args)
-def cmdNick(connection, event, args):
-            connection.nick(args)
-            global nick
-            nick = args
-def cmdPart(connection, event, args):
-    connection.part(event.target())
+def cmdJoin(event):
+    event.connection.join(event.args)
+def cmdNick(event):
+    event.setNick(event.args)
+def cmdPart(event):
+    event.connection.part(event.channel)
 
 
 def updateCommands():

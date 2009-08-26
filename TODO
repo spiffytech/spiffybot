@@ -2,7 +2,7 @@ Update database tables/fields to newest spec on program launch
     DB version number, store commands used to update the database and run at startup
 Allow tell times to be at the front of the message
 Mafiabot!
-Try to reclaim nick if it was lot due to a network interrupt
+Try to reclaim nick if it was lost due to a network interrupt
 Track channels the bot is in and rejoin them on starup
     Include a debug option for testing without join/part spamming channels
 Implement reboot
@@ -19,3 +19,4 @@ replace os.fork() with multiprocessing/multithreading module
 Unit testing
 
 Fix bug "calc speed of light * meters/hertz"
+Re-enable timed tell messages
