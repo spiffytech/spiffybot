@@ -17,6 +17,10 @@
 #You should have received a copy of the GNU General Public License
 #along with Spiffybot.  If not, see <http,//www.gnu.org/licenses/>.
 
+anyMessage = [
+    ("(?P<cmd>^(bai|goodbye|good bye|bye|shalom|farewell))(?P<args>.*)", "misc.farewell"),
+]
+
 cmds = [
     ("(?P<cmd>^ask)(?P<args>.*)", "tell.tell"),
     ("(?P<cmd>^calc)(?P<args>.*)", "calc.calc"),
@@ -38,4 +42,5 @@ cmds = [
     ("(?P<cmd>^woot)(?P<args>)", "wootoff.checkWoot"),
     ("(?P<cmd>^three cheers)(?P<args>.*)", "misc.threeCheers"),
     ("(?P<cmd>^difficulty check)(?P<args>.*)", "misc.difficultyCheck"),
+    ("(?P<cmd>^(bai|goodbye|bye|good bye|shalom))(?P<args>.*)", "misc.farewell"),
 ]

@@ -42,6 +42,17 @@ def excuse(event):
 
 
 
+def farewell(event):
+    '''When a user says "bye", respond with a fancy farewell message'''
+    farewells = pickle.load(open("misc/farewells.pickle"))
+    random.seed(time.time())
+    message = random.choice(farewells)
+    message = event.sender + ": " + message
+    print "Replying in channel" + event.channel
+    event.reply(message)
+
+
+
 def threeCheers(event):
     random.seed(time.time())
     cheers = ["hurrah", "hooray", "huzzah",]

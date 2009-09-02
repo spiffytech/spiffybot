@@ -17,6 +17,7 @@ Consider moving to a class-based module system
 Fix special symbols in calc (sup, sub, carat, etc.)
 replace os.fork() with multiprocessing/multithreading module
 Unit testing
+Replace 'maybe' with markov
 
 Fix bug "calc speed of light * meters/hertz"
 Re-enable timed tell messages

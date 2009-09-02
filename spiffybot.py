@@ -227,6 +227,16 @@ def handleMessage(connection, event):
     # Next, check for echoes
     ircTools.echo(connection, event)
 
+    # See if the message corresponds to any pattern we care about
+    for command in commands.anyMessage:
+        print command[0]
+        r = re.search(command[0], message, re.IGNORECASE)
+        if r != None:
+            args = r.group("args").strip()
+            execString = command[1] + "(ircEvent(connection, event, args))"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
+            eval(execString)
+
+
     # Next, see if the message is something we care about (i.e., a command)
     if re.match(nick + "[:\-, ]", message) or event.eventtype() == "privmsg":  # If it's a command for us:
         # ^^ startswith: "spiffybot: calc" || privmsg part ensures this code is triggered if the message is a PM
@@ -237,12 +247,11 @@ def handleMessage(connection, event):
         foundMatch = False
         for command in commands.cmds:
             print command[0]
-            r = re.search(command[0], message)
+            r = re.search(command[0], message, re.IGNORECASE)
             if r != None:
                 foundMatch = True
                 args = r.group("args").strip()
-                event = ircEvent(connection, event, args)
-                execString = command[1] + "(event)"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
+                execString = command[1] + "(ircEvent(connection, event, args))"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
                 eval(execString)
 
         if foundMatch == False:
