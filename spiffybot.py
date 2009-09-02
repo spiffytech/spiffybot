@@ -112,7 +112,7 @@ def main():
 
     # Add handler functions for various IRC events
     irc.add_global_handler("pubmsg", handleMessage)
-    irc.add_global_handler("ctcp", handleMessage)
+#    irc.add_global_handler("ctcp", handleMessage)  # Commented out until I fix bug that prevents this from logging properly
     irc.add_global_handler("privmsg", handleMessage)
     irc.add_global_handler("join", handleJoin)
     irc.add_global_handler("part", handlePart)
