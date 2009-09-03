@@ -47,7 +47,6 @@ def farewell(event):
     farewells = pickle.load(open("misc/farewells.pickle"))
     random.seed(time.time())
     message = random.choice(farewells)
-    message = event.sender + ": " + message
     print "Replying in channel" + event.channel
     event.reply(message)
 

@@ -1,23 +1,27 @@
-Update database tables/fields to newest spec on program launch
-    DB version number, store commands used to update the database and run at startup
-Allow tell times to be at the front of the message
-Mafiabot!
-Try to reclaim nick if it was lost due to a network interrupt
-Track channels the bot is in and rejoin them on starup
-    Include a debug option for testing without join/part spamming channels
-Implement reboot
-Make changenick() check for errors after trying to change the nick
-clean up changenick()
-See if I can make irclib.py handle all of the unicode stuff for me
-Implement admin user
-Developer documentation
-Easy, simple plugin structure
-    Spec files
-Consider moving to a class-based module system
-Fix special symbols in calc (sup, sub, carat, etc.)
-replace os.fork() with multiprocessing/multithreading module
-Unit testing
-Replace 'maybe' with markov
+Bugs:
+    Re-enable timed tell messages
+    Fix bug "calc speed of light * meters/hertz"
+    Fix special symbols in calc (sup, sub, carat, etc.)
+    Make changenick() check for errors after trying to change the nick
+    Try to reclaim nick if it was lost due to a network interrupt
+    Farewell: don't spit out farewells if people are all saying 'bye' to each other
 
-Fix bug "calc speed of light * meters/hertz"
-Re-enable timed tell messages
+Features:
+    Replace 'maybe' with markov
+    Developer documentation
+    Implement reboot
+    Implement admin user
+    Mafiabot!
+    Allow tell times to be at the front of the message
+    Track channels the bot is in and rejoin them on starup
+        Include a debug option for testing without join/part spamming channels
+
+Refactoring:
+    Consider moving to a class-based module system
+    Unit testing
+    clean up changenick()
+    See if I can make irclib.py handle all of the unicode stuff for me
+    Easy, simple plugin structure
+        Spec files
+    Update database tables/fields to newest spec on program launch
+        DB version number, store commands used to update the database and run at startup
