@@ -23,8 +23,14 @@ commands = {
     "tell ": "tell PERSON MESSAGE [at TIME]: Delivers a message to a user, either when they next are seen, or at a specific time",
     "tiny": "tiny URL: Returns a tinyurl-encoded url",
     "topics": "topics [N]: Lists the previous n topics",
+    "trivia": "Spits out a random fact",
+    "excuse": "Generates computery-sounding excuses",
+    "three cheers": "Cheers thrice",
+    "difficulty check": "difficulty check [very easy|easy|average|tough|challenging|formidible|heroic|nearly impossible]: Simulates a D&D d20 difficulty check",
     "weather": "weather CITY, STATE: Tells you the current weather at a given location",
     "woot": "Returns the current deal on woot.com, it's price, availability, and purchase URL",
+    "quote": "quote STOCK_SYMBOL: Duh.",
+    "tell": "tell USER message [at time]: deliver a message to a user either when they next speak/join, or at a specified time",
 }
 
 
