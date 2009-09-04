@@ -86,6 +86,6 @@ def difficultyCheck(event):
     random.seed(time.time())
     roll = random.randint(1, 20)
     if roll >= limit:
-        event.reply("Victory! You roll a %d, while requiring a %d" % (roll, limit))
+        event.reply("Victory! You roll a %d, requiring only a %d" % (roll, limit))
     else:
-        event.reply("You fail at your challenge with a roll of %d!" % roll)
+        event.reply("You fail at your challenge with a roll of %d out of %d!" % (roll, limit))
