@@ -39,19 +39,22 @@ def topics(connection, event, args):
             connection.privmsg(event.target(), "On %s by %s: %s" % (alteredTime, topic[2], topic[0]))  #Send to the channel
 
 
-def echo(connection, event, args=None):
+def echo(event):
     '''If two people say the same thing immediately after each other, echo them'''
 
-    if event.eventtype() == "privmsg":
-        return
+#    if event.eventType == "privmsg":
+#        return
 
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
-    lastMessages = cursor.execute("select * from messages where channel=? order by time desc limit 3", (event.target(),)).fetchall()
+    lastMessages = cursor.execute("select * from messages where channel=? order by time desc limit 3", (event.channel,)).fetchall()
     if len(lastMessages) < 2:  # First message in this channel, no echo possible
         return
-    if lastMessages[0][2] == lastMessages[1][2] and lastMessages[0][2] != lastMessages[2][2]:
+    if lastMessages[0][2] == lastMessages[1][2] and lastMessages[0][2] != lastMessages[2][2]:  # Don't echo a message if you've already done so
+        print "\n\neverywhere\n"
         if re.search("^[^!.]", lastMessages[0][2]): # don't echo common IRC commands starting with ! or .
-            if lastMessages[0][0] != lastMessages[1][0]:
-                connection.privmsg(event.target(), lastMessages[0][2])
+            print "\n\nnowhere\n"
+            if lastMessages[0][0] != lastMessages[1][0]:  # Only echo if different users are talking
+                print "\n\nthere\n"
+                event.reply(lastMessages[0][2])

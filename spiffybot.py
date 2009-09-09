@@ -32,6 +32,7 @@ from tell import tell
 from misc import misc
 from roulette import roulette
 from stocks import stocks
+from sysstats import sysstats
 from tiny import tiny
 from weather import weather
 from woot import wootoff
@@ -225,7 +226,7 @@ def handleMessage(connection, event):
     # First, see if this triggers a message delivery for whoever just spoke
     tell.deliverMessages(ircEvent(connection, event, args=None))
     # Next, check for echoes
-    ircTools.echo(connection, event)
+    ircTools.echo(ircEvent(connection, event, None))
 
     # See if the message corresponds to any pattern we care about
     for command in commands.anyMessage:
