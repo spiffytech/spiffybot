@@ -242,7 +242,8 @@ def handleMessage(connection, event):
 
     # See if the message corresponds to any pattern we care about
     for command in commands.anyMessage:
-        print command[0]
+        if DEBUG:
+            print command[0]
         r = re.search(command[0], message, re.IGNORECASE)
         if r != None:
             args = r.group("args").strip()
