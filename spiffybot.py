@@ -32,22 +32,11 @@ from createDB import createDB
 import irclib
 import ircTools
 from misc import misc
-from tell import tell
+#from tell import tell
 
 # ==========
 # Temporary imports until automatic plugin infrastructure is in place
-from calc import calc
-import help
-from ircTools import ircTools
-from mcode import mcode
-from tell import tell
-from misc import misc
-from roulette import roulette
-from stocks import stocks
-from sysstats import sysstats
-from tiny import tiny
-from weather import weather
-from woot import wootoff
+from modules import *
 # =========
 
 
@@ -97,7 +86,7 @@ def printException(maxTBlevel=5):
 dbName = "logs.db"
 if not os.path.exists(dbName):
     createDB(dbName)
-    os.popen("./importTrivia.py").read()
+    #os.popen("./importTrivia.py").read()
 dbConn = sqlite.connect(dbName)
 cursor = dbConn.cursor()
 

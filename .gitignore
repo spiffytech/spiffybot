@@ -2,4 +2,5 @@
 *.pyo
 *.swp
 *.swo
+log.db
 *~
