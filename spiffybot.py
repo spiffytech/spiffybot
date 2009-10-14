@@ -34,33 +34,7 @@ import ircTools
 from misc import misc
 #from tell import tell
 
-# ==========
-# Temporary imports until automatic plugin infrastructure is in place
 from modules import *
-# =========
-
-
-class ircEvent:
-    def __init__(self, connection, event, args):
-        self.connection = connection
-        self.eventType = event.eventtype()
-        self.nick = nick
-        self.user = event.sourceuser()  # User who instigated an event (join, part, pubmsg, etc.)
-        self.sender = event.source().split("!")[0]
-        self.args = args
-        if event.target() == self.nick:  # private messages
-            self.channel = self.sender
-        else:
-            self.channel = event.target()
-    def reply(self, message):
-        self.connection.privmsg(self.channel, message)
-    def setNick(self, newNick):
-        self.connection.nick(newNick)
-        global nick
-        nick = newNick
-
-
-
 
 # Enable debug mode if the appropriate command line parameter was passed
 if len(sys.argv) > 1 and sys.argv[1] == "--debug":
@@ -68,28 +42,12 @@ if len(sys.argv) > 1 and sys.argv[1] == "--debug":
 else:
     DEBUG = False
 
-
-def printException(maxTBlevel=5):
-    '''This code is copy/pasted. I don't know how it works, and it doesn't work completely.'''
-    cla, exc, trbk = sys.exc_info()
-    excName = cla.__name__
-    try:
-        excArgs = exc.__dict__["args"]
-    except KeyError:
-        excArgs = "<no args>"
-    excTb = traceback.format_tb(trbk, maxTBlevel)
-    print excName
-    print excArgs
-    print "\n".join(excTb)
-
 # Open the database
 dbName = "logs.db"
 if not os.path.exists(dbName):
     createDB(dbName)
-    #os.popen("./importTrivia.py").read()
 dbConn = sqlite.connect(dbName)
 cursor = dbConn.cursor()
-
 
 # IRC connection information
 network = 'irc.freenode.net'
@@ -144,6 +102,42 @@ def main():
                 server.privmsg("spiffytech", "I crashed!")
         else:
             irc.process_forever()
+
+
+
+class ircEvent:
+    def __init__(self, connection, event, args):
+        self.connection = connection
+        self.eventType = event.eventtype()
+        self.nick = nick
+        self.user = event.sourceuser()  # User who instigated an event (join, part, pubmsg, etc.)
+        self.sender = event.source().split("!")[0]
+        self.args = args
+        if event.target() == self.nick:  # private messages
+            self.channel = self.sender
+        else:
+            self.channel = event.target()
+    def reply(self, message):
+        self.connection.privmsg(self.channel, message)
+    def setNick(self, newNick):
+        self.connection.nick(newNick)
+        global nick
+        nick = newNick
+
+
+
+def printException(maxTBlevel=5):
+    '''This code is copy/pasted. I don't know how it works, and it doesn't work completely.'''
+    cla, exc, trbk = sys.exc_info()
+    excName = cla.__name__
+    try:
+        excArgs = exc.__dict__["args"]
+    except KeyError:
+        excArgs = "<no args>"
+    excTb = traceback.format_tb(trbk, maxTBlevel)
+    print excName
+    print excArgs
+    print "\n".join(excTb)
 
 
 def changeNick(connection=None, event=None, newNick=None):

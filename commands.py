@@ -43,6 +43,7 @@ cmds = [
     ("(?P<cmd>^processes)(?P<args>.*)", "sysstats.listProcesses"),
     ("(?P<cmd>^three cheers)(?P<args>.*)", "misc.threeCheers"),
     ("(?P<cmd>^difficulty check)(?P<args>.*)", "misc.difficultyCheck"),
+    ("(?P<cmd>^roll)(?P<args>.*)", "misc.roll_dice"),
     ("(?P<cmd>^(bai|goodbye|bye|good bye|shalom))(?P<args>.*)", "misc.farewell"),
     ("(?P<cmd>^load)(?P<args>.*)", "sysstats.load"),
     ("(?P<cmd>^free)(?P<args>.*)", "sysstats.freeSpace"),

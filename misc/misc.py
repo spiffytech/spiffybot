@@ -17,6 +17,7 @@
 
 import random
 import cPickle as pickle
+import re
 from sqlite3 import dbapi2 as sqlite
 import time
 
@@ -89,3 +90,29 @@ def difficultyCheck(event):
         event.reply("Victory! You roll a %d, requiring only a %d" % (roll, limit))
     else:
         event.reply("You fail at your challenge with a roll of %d out of %d!" % (roll, limit))
+
+
+def roll_dice(event):
+    random.seed(time.time())
+    if event.args == "":
+        roll = random.randint(1, 6)
+        event.reply("%s: your roll was a %d" % (event.sender, roll))
+        return
+
+    dice = re.match("(?P<count>\d+)d(?P<die_type>\d+)(\+(?P<modifier>\d+){1})*", event.args)
+    if dice == None:
+        event.reply("That's not a real dice type!")
+        return
+    dice = dice.groupdict()
+    die_count = int(dice["count"])
+    die_type = int(dice["die_type"])
+    if dice["modifier"] != None:
+        modifier = int(dice["modifier"])
+
+    roll = 0
+    for i in range(die_count):
+        roll += random.randint(1, die_type)
+    if "modifier" in locals():
+        roll += modifier
+
+    event.reply("%s You rolled a %d" % (event.sender, roll))

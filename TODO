@@ -26,3 +26,4 @@ Refactoring:
         Spec files
     Update database tables/fields to newest spec on program launch
         DB version number, store commands used to update the database and run at startup
+    Compile regex
