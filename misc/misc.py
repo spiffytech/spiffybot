@@ -99,7 +99,7 @@ def roll_dice(event):
         event.reply("%s: your roll was a %d" % (event.sender, roll))
         return
 
-    dice = re.match("(?P<count>[1-9][0-9]*)d-*(?P<die_type>[1-9][0-9]*)(\+(?P<modifier>[0-9]+){1})*.*", event.args)
+    dice = re.match("(?P<count>[1-9][0-9]{0,4})d-*(?P<die_type>[1-9][0-9]{0,4})(\+(?P<modifier>[0-9]+){1})*.*", event.args)
     if dice == None:
         event.reply("That's not a real dice type!")
         return
