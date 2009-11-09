@@ -55,7 +55,7 @@ code = {
     "7": "--...",
     "8": "---..",
     "9": "----.",
-    " ": "  ",
+    " ": "",  # Official Morse Code for a space is two spaces, but that's hard to program with
     "?": "..--..",
     "!": "-.-.--",
     ".": ".-.-.-",
@@ -81,11 +81,15 @@ def encode(event):
     '''Encodes a string into morse code'''
     encoded = ""
     for letter in event.args: 
-        letter = letter.lower()
+        if letter.isalpha():  # Spaces and symbols shouldn't be lowered
+            letter = letter.lower()  
         try:
             encoded += code[letter] + " "
         except:
+            print "stuff"
             encoded += letter
+
+    encoded = encoded.strip()  # Strip the space off the end from the last iteration of the conversion loop
     event.reply(encoded)
 
 
@@ -93,10 +97,13 @@ def encode(event):
 def decode(event):
     '''Decodes a string from morse code. Relies on standard spacing of characters/words/sentences'''
     decoded = ""
-    codes = event.args.split()
+    codes = event.args.split(" ")  # Must specify a space to convert back spaces between words
     for char in codes:  # For every morse-encoded letter we were passed
         for letter in code:  # See if it matches a letter in the code dict
-            if code[letter] == char:
+            if char == "":  # Space between words splits to empty string
+                decoded += " "                
+                break
+            elif code[letter] == char:
                 decoded += letter
                 break
     event.reply(decoded)
