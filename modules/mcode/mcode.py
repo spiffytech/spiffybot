@@ -86,7 +86,6 @@ def encode(event):
         try:
             encoded += code[letter] + " "
         except:
-            print "stuff"
             encoded += letter
 
     encoded = encoded.strip()  # Strip the space off the end from the last iteration of the conversion loop
