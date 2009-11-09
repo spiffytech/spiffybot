@@ -99,10 +99,15 @@ def decode(event):
     codes = event.args.split(" ")  # Must specify a space to convert back spaces between words
     for char in codes:  # For every morse-encoded letter we were passed
         for letter in code:  # See if it matches a letter in the code dict
+            foundMatch = False
             if char == "":  # Space between words splits to empty string
                 decoded += " "                
+                foundMatch = True
                 break
             elif code[letter] == char:
                 decoded += letter
+                foundMatch = True
                 break
+        if foundMatch is not True:
+            decoded += char
     event.reply(decoded)
