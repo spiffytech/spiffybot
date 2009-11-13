@@ -31,7 +31,11 @@ def tiny_url(event=None):
     if not url.startswith("http://"):
         url = "http://" + url
     apiurl = "http://tinyurl.com/api-create.php?url="
-    tinyurl = urllib.urlopen(apiurl + url).read()
+    try:
+        tinyurl = urllib.urlopen(apiurl + url).read()
+    except UnicodeError:
+        event.reply("Can't encode that URL, it contains unicode!")
+        return
     if event != None:
         event.reply(tinyurl)
     else:
