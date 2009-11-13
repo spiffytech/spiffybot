@@ -20,12 +20,12 @@
 
 import urllib
 
-def tiny_url(event=None):
+def tiny_url(event=None, url=None):
     '''Converts a long url to a tinyurl'''
-    if event.args == None:
+    if event == None and url == None:
         event.reply("Give me a url!")
         return
-    else:
+    elif event != None and url == None:
         url = event.args
     # URL must start with HTTP!
     if not url.startswith("http://"):
