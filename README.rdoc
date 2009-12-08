@@ -1,0 +1,24 @@
+= Spiffybot
+
+Spiffybot is a python IRC bot, originally written as an academic exercise.
+
+== Dependencies
+
+- python 2.6
+- python-beautifulsoup
+
+== Running Spiffybot
+
+- Modify the network, channels, and nick near the top of spiffybot.py
+- Run <tt>./spiffybot.py</tt>
+
+== Interacting with Spiffybot
+
+=== Commands
+
+- <em>write this list someday ;)</em>
+
+=== Speaking as the bot through console input
+
+- At the <tt>Talk to channel:</tt> prompt, type a message to send to the channel. Defaults to the first channel in the list.
+- To talk start talking in another channel, type <tt>=#other_channel some message</tt>

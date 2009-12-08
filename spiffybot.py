@@ -36,6 +36,13 @@ from misc import misc
 
 from modules import *
 
+# IRC connection information
+network = 'irc.freenode.net'
+port = 6667
+channels = ['##bottest',]
+nick = 'spiffybot'
+realName = 'spiffybot'
+
 # Enable debug mode if the appropriate command line parameter was passed
 if len(sys.argv) > 1 and sys.argv[1] == "--debug":
     DEBUG = True
@@ -48,13 +55,6 @@ if not os.path.exists(dbName):
     createDB(dbName)
 dbConn = sqlite.connect(dbName)
 cursor = dbConn.cursor()
-
-# IRC connection information
-network = 'irc.freenode.net'
-port = 6667
-channels = ['##bottest',]
-nick = 'spiffybot'
-realName = 'spiffybot'
 
 
 def main():

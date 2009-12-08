@@ -2,5 +2,5 @@
 *.pyo
 *.swp
 *.swo
-log.db
+logs.db
 *~
