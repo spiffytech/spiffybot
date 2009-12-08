@@ -16,6 +16,7 @@ Features:
     Track channels the bot is in and rejoin them on starup
         Include a debug option for testing without join/part spamming channels
     Account for modifiers in difficultyCheck (or just get rid of the impossible levels)
+    Global Thermonuclear War
 
 Refactoring:
     Consider moving to a class-based module system

@@ -23,6 +23,16 @@ def getWeather(event):
     place = event.args
     '''Returns the current weather for a given city and state'''
 
+
+    # Easter eggs
+    if re.match("^\d+$", place):
+        if place == "1337":
+            event.reply("f4i1!")
+            return
+        elif place == "20252":
+            event.reply("Smokey the Bear says, 'Only YOU can prevent hurricanes!'")
+            return
+
     # Start off with the forecast data
     page = urllib.urlopen("http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=%s" % urllib.quote(place))
     page = page.read()
