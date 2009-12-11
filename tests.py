@@ -63,6 +63,14 @@ class Help(unittest.TestCase):
         help.help(self.irc)
         self.assertEqual(self.irc.message, "Commands: calc, decode, difficulty check, encode, excuse, fact, quote, roulette, tell, three cheers, tiny, topics, trivia, weather, woot")
 
+        self.irc.args = "stuffs"
+        help.help(self.irc)
+        self.assertEqual(self.irc.message, "You fail: No such command")
+
+        self.irc.args = "tiny"
+        help.help(self.irc)
+        self.assertEqual(self.irc.message, "tiny URL: Returns a tinyurl-encoded url")
+
 
 class Mcode(unittest.TestCase):
     def testEncoding(self):
