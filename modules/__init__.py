@@ -1,5 +1,5 @@
 from calc import calc
-import help
+from help import help
 from ircTools import ircTools
 from mcode import mcode
 from tell import tell
