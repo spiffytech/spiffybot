@@ -36,7 +36,11 @@ def tell(event):
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
-    sendee = event.args.split()[0].lower()  # To whom should the message be delivered
+    try:
+        sendee = event.args.split()[0].lower()  # To whom should the message be delivered
+    except:
+        event.reply("You didn't send me a valid argument!")
+        return
     if sendee == "me" or sendee == "myself":
         sendee = event.sender
     message = " ".join(event.args.split()[1:])
