@@ -31,15 +31,15 @@ def topics(event):
         event.args = (10)
         
 
-    topics = cursor.execute("select * from topic_history where channel=? order by time;", (event.channel,) )
-    topics = topics.fetchall()[:int(event.args)]
+    topics = cursor.execute("select * from topic_history where channel=? order by time desc limit ?;", (event.channel, event.args) )
+    topics = topics.fetchall()[::-1]
 
     if len(topics) == 0:
         event.reply("No topics in history")
     else:
         for topic in topics: 
             alteredTime = fromEpoch(topic[1], secs=1)  # Altered time is stored in the DB in epoch format. Convert out of that.
-            event.reply("On %s by %s: %s" % (alteredTime, topic[2], topic[0]))  #Send to the channel
+            event.reply("Set on %s by %s: %s" % (alteredTime, topic[2], topic[0]))  #Send to the channel
 
 
 def echo(event):
