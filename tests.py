@@ -56,6 +56,13 @@ class Calc(unittest.TestCase):
         calc.calc(self.irc)
         self.assertEqual(self.irc.message, "1 US stick of butter * hertz = 0.000118294118 m<sup>3</sup> / s")
 
+class Help(unittest.TestCase):
+    def test_help(self):
+        self.irc = ircEvent()
+        self.irc.args = ""
+        help.help(self.irc)
+        self.assertEqual(self.irc.message, "Commands: calc, decode, difficulty check, encode, excuse, fact, quote, roulette, tell, three cheers, tiny, topics, trivia, weather, woot")
+
 
 class Mcode(unittest.TestCase):
     def testEncoding(self):

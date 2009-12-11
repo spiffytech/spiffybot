@@ -20,23 +20,26 @@ import re
 
 dbName = "logs.db"
 
-def topics(connection, event, args):
+def topics(event):
     '''Lists the previous $args topics set in a channel'''
     dbConn = sqlite.connect(dbName)
     cursor = dbConn.cursor()
 
-    if not re.match("\d", args):  # Oh, goodie- input validation
-        args = 3
+    if not re.match("^\d$", event.args):  # Check whether we were given a count of topics to present
+        event.args = str(3)
+    elif int(event.args) > 10:
+        event.args = (10)
+        
 
-    topics = cursor.execute("select * from topic_history where channel=? order by time;", (event.target(),) )
-    topics = topics.fetchall()[:int(args)]
+    topics = cursor.execute("select * from topic_history where channel=? order by time;", (event.channel,) )
+    topics = topics.fetchall()[:int(event.args)]
 
     if len(topics) == 0:
-        connection.privmsg(event.target(), "No topics in history")
+        event.reply("No topics in history")
     else:
         for topic in topics: 
             alteredTime = fromEpoch(topic[1], secs=1)  # Altered time is stored in the DB in epoch format. Convert out of that.
-            connection.privmsg(event.target(), "On %s by %s: %s" % (alteredTime, topic[2], topic[0]))  #Send to the channel
+            evnet.reply("On %s by %s: %s" % (alteredTime, topic[2], topic[0]))  #Send to the channel
 
 
 def echo(event):

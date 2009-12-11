@@ -20,7 +20,6 @@ commands = {
     "decode": "MORSE STRING: Decodes a Morse Code string",
     "fact": "Returns a random fact",
     "roulette": "Randomly tries to shoot you, a la Russian Roulette",
-    "tell ": "tell PERSON MESSAGE [at TIME]: Delivers a message to a user, either when they next are seen, or at a specific time",
     "tiny": "tiny URL: Returns a tinyurl-encoded url",
     "topics": "topics [N]: Lists the previous n topics",
     "trivia": "Spits out a random fact",
@@ -44,4 +43,4 @@ def help(event):
         event.reply(commands[event.args])
         return
     else:
-        event.reply("You fail at : No such command")
+        event.reply("You fail: No such command")
