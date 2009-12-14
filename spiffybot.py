@@ -220,8 +220,8 @@ def handleMessage(connection, event):
 
     # First, see if this triggers a message delivery for whoever just spoke
     tell.deliverMessages(ircEvent(connection, event, args=None))
-    # Next, check for echoes
-    ircTools.echo(ircEvent(connection, event, None))
+#    # Next, check for echoes
+#    ircTools.echo(ircEvent(connection, event, None))
 
     # See if the message corresponds to any pattern we care about
     for command in commands.anyMessage:
