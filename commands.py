@@ -41,7 +41,6 @@ cmds = [
     ("(?P<cmd>^weather)(?P<args>.*)", "weather.getWeather"),
     ("(?P<cmd>^woot)(?P<args>)", "wootoff.checkWoot"),
     ("(?P<cmd>^processes)(?P<args>.*)", "sysstats.listProcesses"),
-    ("(?P<cmd>^three cheers)(?P<args>.*)", "misc.threeCheers"),
     ("(?P<cmd>^difficulty check)(?P<args>.*)", "misc.difficultyCheck"),
     ("(?P<cmd>^roll)(?P<args>.*)", "misc.roll_dice"),
     ("(?P<cmd>^(bai|goodbye|bye|good bye|shalom))(?P<args>.*)", "misc.farewell"),
