@@ -53,17 +53,6 @@ def farewell(event):
 
 
 
-def threeCheers(event):
-    random.seed(time.time())
-    cheers = ["hurrah", "hooray", "huzzah",]
-    cheer = random.choice(cheers)
-    
-    for i in range(3):
-        event.reply(cheer + " for " + event.args)
-        time.sleep(1.1)
-
-
-
 def difficultyCheck(event):
     diffs = {
         "very easy": 0,
