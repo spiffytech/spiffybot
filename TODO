@@ -4,9 +4,11 @@ Bugs:
     Fix special symbols in calc (sup, sub, carat, etc.)
     Make changenick() check for errors after trying to change the nick
     Try to reclaim nick if it was lost due to a network interrupt
-    Farewell: don't spit out farewells if people are all saying 'bye' to each other
 
 Features:
+    Bugtracker
+    Wiki
+    Forum/mailing list
     Replace 'maybe' with markov
     Developer documentation
     Implement reboot
@@ -18,6 +20,7 @@ Features:
     Account for modifiers in difficultyCheck (or just get rid of the impossible levels)
     Global Thermonuclear War
     Movie quotes
+    Alt-color text for weather advisories
 
 Refactoring:
     Consider moving to a class-based module system
@@ -29,6 +32,7 @@ Refactoring:
     Update database tables/fields to newest spec on program launch
         DB version number, store commands used to update the database and run at startup
     Compile regex
+    ***Modify license in all files to not say "GPLv3 or later", but only "GPLv3"
 
 
 Unit tests:

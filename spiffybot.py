@@ -223,7 +223,7 @@ def handleMessage(connection, event):
 #    # Next, check for echoes
 #    ircTools.echo(ircEvent(connection, event, None))
 
-    # See if the message corresponds to any pattern we care about
+    # See if the message corresponds to any (not-a-command) patterns we care about
     for command in commands.anyMessage:
         if DEBUG:
             print command[0]
