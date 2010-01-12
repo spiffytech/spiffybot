@@ -56,6 +56,12 @@ class Calc(unittest.TestCase):
         calc.calc(self.irc)
         self.assertEqual(self.irc.message, "1 US stick of butter * hertz = 0.000118294118 m<sup>3</sup> / s")
 
+    def testStupidUnicodeError(self):
+        self.irc = ircEvent()
+        self.irc.args = "1TB in nibbles"
+        calc.calc(self.irc)
+        self.assertEquals(self.irc.message, "1 terabyte = 2 199 023 255 552 nibbles")
+
 class Help(unittest.TestCase):
     def test_help(self):
         self.irc = ircEvent()

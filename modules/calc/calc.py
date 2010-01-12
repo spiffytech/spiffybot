@@ -32,6 +32,7 @@ def calc(event):
     except:  # Couldn't find the calc output (note that calc (presently) only does actual calculations- not time zones, etc.
         reply = "Google doesn't think that question is worth answering"
 
+    reply = reply.decode("utf-8")
     event.reply(reply)
 
 

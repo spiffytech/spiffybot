@@ -33,6 +33,7 @@ Refactoring:
         DB version number, store commands used to update the database and run at startup
     Compile regex
     ***Modify license in all files to not say "GPLv3 or later", but only "GPLv3"
+    See if difficulty_check should use roll()
 
 
 Unit tests:
