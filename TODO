@@ -21,6 +21,7 @@ Features:
     Global Thermonuclear War
     Movie quotes
     Alt-color text for weather advisories
+    Text messaging
 
 Refactoring:
     Consider moving to a class-based module system
