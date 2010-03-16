@@ -229,7 +229,10 @@ def handleMessage(connection, event):
             print command[0]
         r = re.search(command[0], message, re.IGNORECASE)
         if r != None:
-            args = r.group("args").strip()
+            try:
+                args = r.group("args").strip()
+            except:
+                args = None
             execString = command[1] + "(ircEvent(connection, event, args))"  # Using a string instead of storing the function facilitates the planned automatic module loading feature.
             eval(execString)
 

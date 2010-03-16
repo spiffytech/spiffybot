@@ -18,7 +18,7 @@
 #along with Spiffybot.  If not, see <http,//www.gnu.org/licenses/>.
 
 anyMessage = [
-    ("^(?P<cmd>(bai|goodbye|good bye|bye|shalom|farewell))[ !,](?P<args>[^a-zA-Z]*)", "misc.farewell"),
+    ("^(?P<cmd>(bai|goodbye|good bye|bye|shalom|farewell))(!|[,:] (?P<args>.*)|$)", "misc.farewell"),
 ]
 
 cmds = [
