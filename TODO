@@ -6,6 +6,7 @@ Bugs:
     Try to reclaim nick if it was lost due to a network interrupt
 
 Features:
+    Desktop tray tool that alerts users to their nick being used
     Bugtracker
     Wiki
     Forum/mailing list
