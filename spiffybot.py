@@ -35,7 +35,12 @@ from misc import misc
 #from tell import tell
 
 from modules import *
-import server_details
+try:
+    import server_details
+except:
+    print "You need to create a server_details.py before you can run the bot."
+    print "You can copy server_details.py.example to get started."
+    exit(1)
 
 # IRC connection information
 network = 'short.csc.ncsu.edu'
