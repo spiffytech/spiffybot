@@ -35,10 +35,11 @@ from misc import misc
 #from tell import tell
 
 from modules import *
+import server_details
 
 # IRC connection information
-network = 'irc.freenode.net'
-port = 6667
+network = 'short.csc.ncsu.edu'
+port = 1337
 channels = ['##bottest',]
 nick = 'spiffybot'
 realName = 'spiffybot'
@@ -66,7 +67,7 @@ def main():
     # Create a server object, connect and join the channels
     global server
     server = irc.server()
-    server.connect(network, port, nick, ircname = realName)
+    server.connect(network, port, nick, ircname=realName, username=server_details.username, password=server_details.password, ssl=server_details.ssl)
     joinChannels()
 
 
